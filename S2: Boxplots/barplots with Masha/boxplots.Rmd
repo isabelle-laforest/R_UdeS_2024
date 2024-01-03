@@ -1,0 +1,175 @@
+---
+title: "box_plot_ggplot2"
+date: "2024-01-03"
+Author: Masha Faticov
+---
+
+Load data:
+- moss bacteria from Norther Quebec, 
+- measured bacterial richness from 4 different moss species and two compartments
+- estimated diversity and richness of bacteria
+
+```{r setup, include=FALSE}
+moss_data <- read.csv("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/Courses/R course visualization with ggplot/Data/mossdata.csv", sep=';', header =TRUE)
+```
+
+Question of the study:
+
+Does bacterial diversity differ between moss species and moss compartments?
+One way to visualize the answer to this question is to use box plots
+
+
+Let's start with a simple box plot
+```{r}
+plot1 <- ggplot(moss_data, aes(x = factor(Species), y = Shannon)) +
+  geom_boxplot() +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species")
+plot1
+```
+What do we see on this plot?
+- Box itself shows the interquantile range - the middle (50%) of the data or median
+- Data points that fall outside 1.5 times the IQR from the quartiles are potentially outliers
+
+ Data distribution is hidden behind each box. For instance, a normal distribution could look exactly the same as a bimodal distribution. Let's plot together with data points:
+ 
+```{r}
+plot2 <- ggplot(moss_data, aes(x = factor(Species), y = Shannon)) +
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species")
+plot2
+
+#change shape of the boxplot - notch and notchwidth - make it easier to compare medians
+plot2a <- ggplot(moss_data, aes(x = factor(Species), y = Shannon)) +
+  geom_boxplot(notch=TRUE,
+        notchwidth = 0.9,
+        # custom outliers
+        outlier.colour="red",
+        outlier.fill="red",
+        outlier.size=3) +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species")
+plot2a
+```
+ 
+ 
+We have three different species and we would like to show it on our box plot? 
+There are several ways to do it:
+
+- first you can pick and assign color yourself
+#https://derekogle.com/NCGraphing/resources/colors
+#https://r-graph-gallery.com/42-colors-names.html
+
+- using color brewers in R (packages that pre made color schemes for you), e.g., RColorBrewer: sequential palettes, diverging and qualitative
+#https://r-graph-gallery.com/38-rcolorbrewers-palettes.html 
+#https://github.com/EmilHvitfeldt/r-color-palettes
+
+install.packages("RColorBrewer")
+library(RColorBrewer)
+ 
+```{r}
+#1. Picking color ourselves - fill vs color (contour)
+#alpha --  geom_boxplot(alpha = 0.8)
+plot3a <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Species))) +
+  geom_boxplot(alpha = 0.8) +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  scale_fill_manual(values = c("lightpink4", "slategray4","plum3", "darkseagreen4")) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species")
+plot3a
+
+#2. Picking color ourselves 
+plot3b <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Species))) +
+  geom_boxplot() +
+  geom_jitter(color="gray30", size=0.5, alpha=0.6) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species") +
+  scale_fill_brewer() 
+plot3b
+
+#color instead of fill
+plot3c <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, color = factor(Species))) +
+  geom_boxplot() +
+  geom_jitter(color="gray30", size=0.5, alpha=0.6) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species") +
+  scale_color_brewer() 
+plot3c
+
+plot3d <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Species))) +
+  geom_boxplot() +
+  geom_jitter(color="gray30", size=0.5, alpha=0.6) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Box plot of bacterial diversity among moss species") +
+  scale_fill_brewer(palette = "Set1") 
+plot3d
+```
+
+What if we want to also demonstrate mean value (avergaes) and not only median? We can do that
+```{r}
+#add mean to the graph -  stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="", fill="") 
+plot4 <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Species))) +
+  geom_boxplot(alpha = 0.8) +
+  scale_fill_manual(values = c("lightpink4", "slategray4","plum3", "darkseagreen4")) +
+  stat_summary(fun=mean, geom="point", shape=20, size=3, color="royalblue4") +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") +
+  ggtitle("Bacterial diversity of different moss species") 
+plot4
+```
+
+Let's look at our data again:
+View(moss_data)
+
+We have moss species, but we also are interested how bacterial diversity differ between moss compartments and whether this pattern is similar or different among moss species
+
+Let's plot this!
+
+```{r}
+View(moss_data)
+
+#grouped
+plot5 <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+  #Adds individual data points on the box plots with a jittered position to avoid overplotting.
+#position_jitterdodge ensures that the points are spread out within each category for clarity.
+#alpha=0.2 sets the transparency of the points.
+  geom_point(position=position_jitterdodge(dodge.width=0.7, seed=0.5),alpha=0.4,show.legend = FALSE) +
+  xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") 
+plot5
+
+#faceting - one facet per species 
+plot5b <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+    facet_wrap(~ Species, scale="free") +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+  geom_point(position=position_jitterdodge(dodge.width=0.7, seed=0.5),alpha=0.4,show.legend = FALSE) +
+  #xlab("Moss species") +
+  ylab("Bacterial diversity (Shannon index)") 
+plot5b
+
+#we need to modify the theme of our plot 
+plot5c <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+    facet_wrap(~ Species, scale="free") +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+ geom_point(position=position_jitterdodge(dodge.width=0.7, seed=0.5),alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  theme(strip.text.x = element_blank())
+plot5c
+
+```
+

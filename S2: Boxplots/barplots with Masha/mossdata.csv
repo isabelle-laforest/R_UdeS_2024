@@ -1,0 +1,132 @@
+SampleID;Species;Month;Compartment;Microsite;Location;SoilpH;SiteHumidity;AmbientTemp;SoilTemp;OrgLayer;LeafLitter;LeafLitterSpec;Canopy;Observed;Shannon
+S-1-POLPIL-B;Polytrichum piliferum;September;Brown;J;Chemin PK;4.8;45;26.5;19;0;Low;alninc;64.38;5348;7.32053413452894
+S-2-POLPIL-G;Polytrichum piliferum;September;Green;J;Chemin PK;4.8;45;26.5;19;0;Low;alninc;64.38;4270;6.96966416654889
+S-2-POLPIL-B;Polytrichum piliferum;September;Brown;J;Chemin PK;4.8;45;26.5;19;0;Low;alninc;64.38;5276;7.17173834104697
+S-3-POLPIL-G;Polytrichum piliferum;September;Green;J;Chemin PK;4.8;45;26.5;19;0;Low;alninc;64.38;4285;6.89898362619996
+S-3-POLPIL-B;Polytrichum piliferum;September;Brown;J;Chemin PK;4.8;45;26.5;19;0;Low;alninc;64.38;5436;7.20846266603345
+S-4-POLPIL-G;Polytrichum piliferum;September;Green;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;4144;6.97265130668448
+S-4-POLPIL-B;Polytrichum piliferum;September;Brown;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;5714;7.35711078647124
+S-5-POLPIL-G;Polytrichum piliferum;September;Green;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;4663;7.08101379265208
+S-5-POLPIL-B;Polytrichum piliferum;September;Brown;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;5428;7.34147457529737
+S-6-POLPIL-G;Polytrichum piliferum;September;Green;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;4766;7.06528172504304
+S-6-POLPIL-B;Polytrichum piliferum;September;Brown;K;Chemin PK;5.32;43;23.9;12.4;0;High;alninc;49.13;5474;7.29327194986044
+S-7-POLPIL-G;Polytrichum piliferum;September;Green;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;4009;6.79372672750774
+S-7-POLPIL-B;Polytrichum piliferum;September;Brown;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;5227;7.22381463399038
+S-8-POLPIL-G;Polytrichum piliferum;September;Green;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;3372;6.44843169836424
+S-8-POLPIL-B;Polytrichum piliferum;September;Brown;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;5270;7.25302845406103
+S-9-POLPIL-G;Polytrichum piliferum;September;Green;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;3599;6.55819528038265
+S-9-POLPIL-B;Polytrichum piliferum;September;Brown;L;Chemin PK;5.21;41;24;16.6;0;Medium;alninc;55.02;4974;7.10789617085907
+S-10-POLPIL-G;Polytrichum piliferum;September;Green;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;4300;7.012867979695
+S-10-POLPIL-B;Polytrichum piliferum;September;Brown;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;4823;7.20111897324495
+S-11-POLPIL-G;Polytrichum piliferum;September;Green;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;4200;6.98229795352193
+S-11-POLPIL-B;Polytrichum piliferum;September;Brown;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;5050;7.19912547140753
+S-12-POLPIL-G;Polytrichum piliferum;September;Green;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;4450;6.9458211931127
+S-12-POLPIL-B;Polytrichum piliferum;September;Brown;M;Eastmain 1;5.18;70;18.1;14.6;0;Medium;alninc;76.76;5010;7.12826948520024
+S-13-POLPIL-G;Polytrichum piliferum;September;Green;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;3963;6.8444376872292
+S-13-POLPIL-B;Polytrichum piliferum;September;Brown;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;5071;7.2397529076414
+S-14-POLPIL-G;Polytrichum piliferum;September;Green;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;3741;6.49776218313848
+S-14-POLPIL-B;Polytrichum piliferum;September;Brown;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;5034;7.15328224828823
+S-15-POLPIL-G;Polytrichum piliferum;September;Green;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;3955;6.92053511824363
+S-15-POLPIL-B;Polytrichum piliferum;September;Brown;N;Eastmain 1;5.23;61;20.6;11.9;0;Low;alninc;37.45;5007;7.25027772607254
+S-16-POLPIL-G;Polytrichum piliferum;September;Green;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;3751;6.70286205136283
+S-16-POLPIL-B;Polytrichum piliferum;September;Brown;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;5267;7.32526888985398
+S-17-POLPIL-G;Polytrichum piliferum;September;Green;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;4333;6.85185300791145
+S-17-POLPIL-B;Polytrichum piliferum;September;Brown;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;5395;7.32201081808164
+S-18-POLPIL-G;Polytrichum piliferum;September;Green;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;4337;6.8633550923615
+S-18-POLPIL-B;Polytrichum piliferum;September;Brown;O;Eastmain 1;5.41;64;20.5;13.9;0;Medium;alninc;45.41;5232;7.19484370530189
+S-1-POLJUN-G;Polytrichum juniperinum;September;Green;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;4165;6.67368218492967
+S-1-POLJUN-B;Polytrichum juniperinum;September;Brown;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;5245;7.18762094425485
+S-2-POLJUN-G;Polytrichum juniperinum;September;Green;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;4251;6.955536222971
+S-2-POLJUN-B;Polytrichum juniperinum;September;Brown;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;5419;7.30091936012344
+S-3-POLJUN-G;Polytrichum juniperinum;September;Green;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;3921;7.08319125546115
+S-3-POLJUN-B;Polytrichum juniperinum;September;Brown;P;Eastmain 1;5.08;73;17.5;14.6;0;High;alninc;62.42;5187;7.34339320712291
+S-7-POLJUN-G;Polytrichum juniperinum;September;Green;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;3813;6.95331726802161
+S-7-POLJUN-B;Polytrichum juniperinum;September;Brown;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;5082;7.32343348142768
+S-8-POLJUN-G;Polytrichum juniperinum;September;Green;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;3575;6.90874661097738
+S-8-POLJUN-B;Polytrichum juniperinum;September;Brown;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;5077;7.36689539195677
+S-9-POLJUN-G;Polytrichum juniperinum;September;Green;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;4247;7.06390419840361
+S-9-POLJUN-B;Polytrichum juniperinum;September;Brown;Q;Eastmain 1;5.16;67;22.6;15.2;0;Medium;betnan;72.51;5114;7.29112530194957
+S-1-POLCOM-G;Polytrichum commune;September;Green;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;3889;7.02437020951263
+S-1-POLCOM-B;Polytrichum commune;September;Brown;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;5204;7.33603336977604
+S-2-POLCOM-G;Polytrichum commune;September;Green;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;3996;6.72028773894965
+S-2-POLCOM-B;Polytrichum commune;September;Brown;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;5029;7.36938295628567
+S-3-POLCOM-G;Polytrichum commune;September;Green;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;3933;7.02571616383542
+S-3-POLCOM-B;Polytrichum commune;September;Brown;R;Eastmain 2;5.22;56;22.4;12.5;2;High;vacbor;37.66;5111;7.33615112554893
+S-4-POLCOM-G;Polytrichum commune;September;Green;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;4505;6.9832810884078
+S-4-POLCOM-B;Polytrichum commune;September;Brown;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;5496;7.08397643044771
+S-5-POLCOM-G;Polytrichum commune;September;Green;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;4441;7.10873505521134
+S-5-POLCOM-B;Polytrichum commune;September;Brown;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;5021;7.26579413928946
+S-6-POLCOM-G;Polytrichum commune;September;Green;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;4196;7.23161929782355
+S-6-POLCOM-B;Polytrichum commune;September;Brown;S;Eastmain 2;5.26;57;25.8;15.5;2;Medium;vacbor;25.86;5065;7.35261110630429
+S-7-POLCOM-G;Polytrichum commune;September;Green;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;4699;7.23780812733328
+S-7-POLCOM-B;Polytrichum commune;September;Brown;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;5380;7.36399321017453
+S-8-POLCOM-G;Polytrichum commune;September;Green;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;5002;7.02454279704108
+S-8-POLCOM-B;Polytrichum commune;September;Brown;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;5411;7.38394283037842
+S-9-POLCOM-G;Polytrichum commune;September;Green;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;4499;7.22687488064071
+S-9-POLCOM-B;Polytrichum commune;September;Brown;T;Eastmain 2;5.14;55;29.3;14.1;2;Medium;vacbor;52.71;5306;7.31574682461744
+S-1-DICUND-B;Dicranum undulatum;September;Brown;U;Eastmain 2;4.11;67;29.5;14.5;0;None;none;69.22;5061;7.44672784738089
+S-3-DICUND-G;Dicranum undulatum;September;Green;U;Eastmain 2;4.11;67;29.5;14.5;0;None;none;69.22;4974;6.90946981584564
+S-3-DICUND-B;Dicranum undulatum;September;Brown;U;Eastmain 2;4.11;67;29.8;14.5;0;None;none;69.22;5289;7.44511442811251
+S-4-DICUND-G;Dicranum undulatum;September;Green;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;5114;7.26356683702818
+S-4-DICUND-B;Dicranum undulatum;September;Brown;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;4993;7.37972221079451
+S-5-DICUND-G;Dicranum undulatum;September;Green;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;5208;7.17003575615015
+S-5-DICUND-B;Dicranum undulatum;September;Brown;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;5328;7.43080807555769
+S-6-DICUND-G;Dicranum undulatum;September;Green;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;5131;7.15085152979964
+S-6-DICUND-B;Dicranum undulatum;September;Brown;V;Eastmain 2;3.82;45;29.8;12.5;0;None;none;75.74;5417;7.39680544500557
+S-7-DICUND-G;Dicranum undulatum;September;Green;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5621;7.5425940900773
+S-7-DICUND-B;Dicranum undulatum;September;Brown;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5417;7.23046364250991
+S-8-DICUND-G;Dicranum undulatum;September;Green;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5407;7.2632885237969
+S-8-DICUND-B;Dicranum undulatum;September;Brown;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5318;7.49319922239272
+S-9-DICUND-G;Dicranum undulatum;September;Green;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5210;7.10921813526646
+S-9-DICUND-B;Dicranum undulatum;September;Brown;W;Eastmain 2;3.75;50;28.6;12.1;0;None;none;59.24;5161;7.45396433649645
+S-19-POLPIL-G;Polytrichum piliferum;September;Green;X;Pine Forest;4.95;63;25;22.6;0;Low;pinban;71.57;3595;6.66808039022913
+S-19-POLPIL-B;Polytrichum piliferum;September;Brown;X;Pine Forest;4.95;63;25;22.6;0;Low;pinban;71.57;5204;7.06169526127433
+S-20-POLPIL-G;Polytrichum piliferum;September;Green;X;Pine Forest;4.95;63;25;22.6;0;Low;pinban;71.57;2878;6.05097535136532
+S-20-POLPIL-B;Polytrichum piliferum;September;Brown;X;Pine Forest;4.95;63;25;22.6;0;Low;pinban;71.57;4932;7.09297899273329
+S-21-POLPIL-G;Polytrichum piliferum;September;Green;X;Pine Forest;4.95;63;25;22.6;0;Low;pinban;71.57;2552;6.09019359106845
+S-22-POLPIL-G;Polytrichum piliferum;September;Green;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;3855;6.88142636387121
+S-22-POLPIL-B;Polytrichum piliferum;September;Brown;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;5508;7.34200412064133
+S-23-POLPIL-G;Polytrichum piliferum;September;Green;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;4390;6.9834596011667
+S-23-POLPIL-B;Polytrichum piliferum;September;Brown;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;5313;7.35069193970117
+S-24-POLPIL-G;Polytrichum piliferum;September;Green;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;4493;7.09670149451695
+S-24-POLPIL-B;Polytrichum piliferum;September;Brown;Y;Pine Forest;4.31;63;25.3;16.8;0;Low;pinban;75.67;5301;7.29903093449983
+S-25-POLPIL-G;Polytrichum piliferum;September;Green;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;3861;6.78059619790417
+S-25-POLPIL-B;Polytrichum piliferum;September;Brown;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;5081;7.14579291648699
+S-26-POLPIL-G;Polytrichum piliferum;September;Green;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;4214;7.00261654673074
+S-26-POLPIL-B;Polytrichum piliferum;September;Brown;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;5332;7.30345458605509
+S-27-POLPIL-G;Polytrichum piliferum;September;Green;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;3373;6.657234803634
+S-27-POLPIL-B;Polytrichum piliferum;September;Brown;Z;Pine Forest;4.29;59;27.4;18.5;0;Medium;pinban;61.28;5061;7.28319809694417
+S-10-POLJUN-G;Polytrichum juniperinum;September;Green;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;4463;7.11546563136858
+S-10-POLJUN-B;Polytrichum juniperinum;September;Brown;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;5364;7.32467787283746
+S-11-POLJUN-G;Polytrichum juniperinum;September;Green;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;4392;6.93819690427713
+S-11-POLJUN-B;Polytrichum juniperinum;September;Brown;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;5193;7.3395752888892
+S-12-POLJUN-G;Polytrichum juniperinum;September;Green;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;4268;6.97918050709728
+S-12-POLJUN-B;Polytrichum juniperinum;September;Brown;AA;Nemaska community intersection;4.86;63;25.9;16.4;0;Medium;pinban;72.05;5265;7.25205094112896
+S-13-POLJUN-G;Polytrichum juniperinum;September;Green;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;3529;6.72567609369366
+S-13-POLJUN-B;Polytrichum juniperinum;September;Brown;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;4981;7.29015197621449
+S-14-POLJUN-G;Polytrichum juniperinum;September;Green;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;3967;6.76150121179159
+S-14-POLJUN-B;Polytrichum juniperinum;September;Brown;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;5101;7.39304597034526
+S-15-POLJUN-G;Polytrichum juniperinum;September;Green;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;4128;6.86958265599895
+S-15-POLJUN-B;Polytrichum juniperinum;September;Brown;AB;Nemaska community intersection;4.65;65;25.6;13.6;0;Low;pinban;91.14;4817;7.39864129764957
+S-16-POLJUN-G;Polytrichum juniperinum;September;Green;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;3561;6.70562675166117
+S-16-POLJUN-B;Polytrichum juniperinum;September;Brown;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;4971;7.25987317859228
+S-17-POLJUN-G;Polytrichum juniperinum;September;Green;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;3956;5.90209507522165
+S-17-POLJUN-B;Polytrichum juniperinum;September;Brown;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;5166;7.26451574928983
+S-18-POLJUN-G;Polytrichum juniperinum;September;Green;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;3687;6.92263729566461
+S-18-POLJUN-B;Polytrichum juniperinum;September;Brown;AC;Nemaska community intersection;4.89;64;26.7;14.7;0;Low;pinban;47.88;5197;7.29889318587483
+S-19-POLJUN-B;Polytrichum juniperinum;September;Brown;AD;Pine Forest;4.38;64;25.4;17.4;0;High;pinban;71.18;5255;7.2211578576637
+S-20-POLJUN-G;Polytrichum juniperinum;September;Green;AD;Pine Forest;4.38;64;25.4;17.4;0;High;pinban;71.18;4028;6.37478018823999
+S-20-POLJUN-B;Polytrichum juniperinum;September;Brown;AD;Pine Forest;4.38;64;25.4;17.4;0;High;pinban;71.18;4866;7.2549215308734
+S-21-POLJUN-G;Polytrichum juniperinum;September;Green;AD;Pine Forest;4.38;64;25.4;17.4;0;High;pinban;71.18;4346;6.57837122477674
+S-21-POLJUN-B;Polytrichum juniperinum;September;Brown;AD;Pine Forest;4.38;64;25.4;17.4;0;High;pinban;71.18;5112;7.24050982823221
+S-22-POLJUN-G;Polytrichum juniperinum;September;Green;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;4190;6.93128280991444
+S-22-POLJUN-B;Polytrichum juniperinum;September;Brown;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;5171;7.36551819081734
+S-23-POLJUN-G;Polytrichum juniperinum;September;Green;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;4130;6.92098576146197
+S-23-POLJUN-B;Polytrichum juniperinum;September;Brown;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;5202;7.26398410207995
+S-24-POLJUN-G;Polytrichum juniperinum;September;Green;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;3592;6.83365403030664
+S-24-POLJUN-B;Polytrichum juniperinum;September;Brown;AE;Pine Forest;4.67;68;24.5;18.9;0;Low;pinban;77.69;4755;7.17776242771665
+S-25-POLJUN-G;Polytrichum juniperinum;September;Green;AF;Pine Forest;4.73;65;24.6;16.9;0;Medium;pinban;65.52;3350;6.68869468790526
+S-25-POLJUN-B;Polytrichum juniperinum;September;Brown;AF;Pine Forest;4.73;65;24.6;16.9;0;Medium;pinban;65.52;4927;7.20184791813161
+S-26-POLJUN-G;Polytrichum juniperinum;September;Green;AF;Pine Forest;4.73;65;24.6;16.9;0;Medium;pinban;65.52;4175;7.06735288647642
+S-26-POLJUN-B;Polytrichum juniperinum;September;Brown;AF;Pine Forest;4.73;65;24.6;16.9;0;Medium;pinban;65.52;4971;7.34766606445992
+S-27-POLJUN-B;Polytrichum juniperinum;September;Brown;AF;Pine Forest;4.73;65;24.6;16.9;0;Medium;pinban;65.52;5088;7.2967474860417
