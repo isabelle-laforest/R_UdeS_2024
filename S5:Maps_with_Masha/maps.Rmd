@@ -1,0 +1,94 @@
+---
+title: "Maps"
+output: html_document
+date: "2024-01-04"
+author: Masha Faticov
+---
+
+Upload packages
+```{r}
+# Upload libraries - check if you need to install some of the packages
+library(tidyverse) 
+library(magrittr) # pipes
+library(lintr) # code linting
+library(sf) # spatial data handling
+library(cowplot) # stack ggplots
+library(readxl) #package to read excel files in R
+library(ggmap) #package to download maps from google maps
+library(ggsn) #package to deal with spatial data
+library(rgdal)
+library(proj4)  
+library(unikn)  
+library(ggspatial)
+
+```
+Steps to create maps:
+
+1. We need to find and load background map to R
+ -  region boundaries can be stored in shapefiles or geoJSON files (use package SF) 
+ - some R libraries also provide the data for the most common places, especially boundries of countries (map, mapdata packages - a few examples)
+ -  is also possible to use google maps to load and style backgrounds (found it to be the easiest option for me) - package ggmap and I will show this example
+ 
+ 2. We also need data to plot on the map
+ - easiest if you have coordinates (Google coordinates WGS 84 will work) for your data to plot on the map
+ - we will use ggplot2 and ggmap package to plot data
+ 
+ Let's plot a map
+ 
+```{r}
+#Load data
+dataformaps <- read_excel("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/New Frontiers/Maps_NF_all_traps/Montreal.xlsx")
+
+#check whether variables are numeric or character - transform the character ones to numeric
+dataformaps$Lat <- as.numeric(as.character(dataformaps$Lat))
+dataformaps$Long <- as.numeric(as.character(dataformaps$Long))
+
+#Access Googple maps
+#to access maps in Googple maps you need API key. Call it using the key below:
+register_google(key = "AIzaSyB7ujAyTHJ5NCnRKyfz6YRjDzr9JEEboyo")
+
+# get map from Google maps by providing coordinates of the center of the city
+map1 = get_googlemap(center = c(-73.616986, 45.489037), color='bw', maptype='terrain', 
+ zoom=10,style = list(c(element="labels", visibility="off"),
+ c("&style=", feature="road.arterial", color="0xffffff", visibility="off"),
+ c("&style=", feature="road.highway", color="0xffffff", visibility="off"))) 
+
+#center = c(-73.616986, 45.489037): Specifies the longitude and latitude around which to center the map.
+#color='bw': Indicates that the map should be in black and white
+#zoom=10: Sets the zoom level of the map. The higher the number, the closer the zoom
+#style: A list of styles to further customize the appearance of the map. In this case:
+#c(element="labels", visibility="off"): Turns off all labels on the map (like street names and points of interest).
+#c("&style=", feature="road.arterial", color="0xffffff", visibility="off"): Tries to turn off arterial roads, setting their color to white (0xffffff), though the syntax appears to be incorrect.
+#c("&style=", feature="road.highway", color="0xffffff", visibility="off"): Tries to turn off highways, also setting their color to white, with a similar issue in the syntax.
+
+p_map1 <- ggmap(map1, extent="panel") +
+  scale_x_continuous(limits = c(-74.0, -73.42), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(45.36, 45.70), expand = c(0, 0)) +
+  geom_point(data=dataformaps, aes(x=Long, y=Lat, size=2,color="blue", fill="blue")) +
+  annotate("text", x=-73.6, y=45.432, label= "Montréal") +
+  theme(
+    legend.position = "right",
+    text = element_text(color = "#22211d"),
+    plot.background = element_rect(fill = "white", color = NA), 
+    panel.background = element_rect(fill = "white", color = NA),
+    axis.title.y = element_text(vjust = +3),
+    axis.title.x = element_text(vjust = -0.30),
+    legend.background = element_rect(fill = NA, color = NA),
+    legend.key=element_rect(fill= NA),
+    legend.title = element_text(face = "bold"),
+    axis.line = element_line(colour = "black"), 
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1), 
+    plot.title = element_text(size= 16, hjust=1, color = "#4e4d47", margin = margin(b =  
+    0.1, t = 0.4, l = 2, unit = "cm"))) + 
+    guides(color = guide_legend(override.aes = list(size = 5))) +
+    labs(x = "Latitude",y = "Longitude", caption = "Population size: 1 760 000 \n Population density per square kilometre: 4830") 
+
+p_map1 + 
+annotation_north_arrow(location = "tl", which_north = "true", pad_x = unit(0.0, "in"), pad_y = unit(0.2, "in"),style = north_arrow_minimal) + 
+ggsn::scalebar(x.min=-74.0,x.max=-73.48,y.min=45.38,y.max=45.73, transform=TRUE, location = "bottomright",dist_unit = "km", dist=6, st.bottom = TRUE, st.size = 2)
+p_map1
+
+```
+ 
+ 
+ 
