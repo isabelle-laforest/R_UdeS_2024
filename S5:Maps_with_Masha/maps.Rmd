@@ -44,6 +44,10 @@ dataformaps$Lat <- as.numeric(as.character(dataformaps$Lat))
 dataformaps$Long <- as.numeric(as.character(dataformaps$Long))
 
 #Access Googple maps
+#Please note that to use the get_googlemap function, you will need to have a valid Google API key, and you must enable billing on the Google Cloud Platform. Without a valid API key, the function call will not be able to retrieve the map data from Google Maps.
+
+#To use the API key, you should set it with register_google(key = "your_api_key") before calling get_googlemap. Replace "your_api_key" with your actual Google API key.
+#
 #to access maps in Googple maps you need API key. Call it using the key below:
 register_google(key = "AIzaSyB7ujAyTHJ5NCnRKyfz6YRjDzr9JEEboyo")
 
@@ -61,11 +65,31 @@ map1 = get_googlemap(center = c(-73.616986, 45.489037), color='bw', maptype='ter
 #c("&style=", feature="road.arterial", color="0xffffff", visibility="off"): Tries to turn off arterial roads, setting their color to white (0xffffff), though the syntax appears to be incorrect.
 #c("&style=", feature="road.highway", color="0xffffff", visibility="off"): Tries to turn off highways, also setting their color to white, with a similar issue in the syntax.
 
-p_map1 <- ggmap(map1, extent="panel") +
+
+
+#The code provided will create a map with points plotted at locations defined by the Long and Lat variables in your dataformaps data frame. The color of these points will be determined by the Trap_id variable. Here's a breakdown of what each part of the code does:
+
+#We could run the map without setting limit and that should work:
+p_map1 <- ggmap(map1, extent="panel") + #This initializes a ggplot object using a map template obtained from map1. The extent="panel" argument specifies that the map should be confined to the limits of the data or the plot panel
+geom_point(data=dataformaps, aes(x=Long, y=Lat, color = Trap_id), size=4, alpha=0.4) #our data pints we want to add to the map
+p_map1 
+
+
+#Let's set the limits to the map
+p_map2 <- ggmap(map1, extent="panel") + 
+  scale_x_continuous(limits = c(-74.0, -73.42), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(45.36, 45.70), expand = c(0, 0)) + #scale_x_continuous() and scale_y_continuous(): These set the limits for the x-axis (longitude) and y-axis (latitude) and strictly stay within the limits of the coordinates - to not add extra space
+  geom_point(data=dataformaps, aes(x=Long, y=Lat, color = Trap_id), size=4, alpha=0.4) 
+p_map2
+
+
+#Let's make it even nicer. We will add theme and play with the style of the map
+p_map3 <- ggmap(map1, extent="panel") +
   scale_x_continuous(limits = c(-74.0, -73.42), expand = c(0, 0)) +
   scale_y_continuous(limits = c(45.36, 45.70), expand = c(0, 0)) +
-  geom_point(data=dataformaps, aes(x=Long, y=Lat, size=2,color="blue", fill="blue")) +
-  annotate("text", x=-73.6, y=45.432, label= "Montréal") +
+  geom_point(data=dataformaps, aes(x=Long, y=Lat, color = "Trap_id"),size=4, alpha=0.4)+
+  scale_color_manual(values = c("Trap_id" = "darkblue"), 
+                     name = "", labels = c("Sampling locations")) +
   theme(
     legend.position = "right",
     text = element_text(color = "#22211d"),
@@ -74,19 +98,20 @@ p_map1 <- ggmap(map1, extent="panel") +
     axis.title.y = element_text(vjust = +3),
     axis.title.x = element_text(vjust = -0.30),
     legend.background = element_rect(fill = NA, color = NA),
-    legend.key=element_rect(fill= NA),
     legend.title = element_text(face = "bold"),
     axis.line = element_line(colour = "black"), 
-    panel.border = element_rect(colour = "black", fill=NA, linewidth=1), 
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1), #: Adds a black border around the plotting panel with a line width of 1.
     plot.title = element_text(size= 16, hjust=1, color = "#4e4d47", margin = margin(b =  
     0.1, t = 0.4, l = 2, unit = "cm"))) + 
-    guides(color = guide_legend(override.aes = list(size = 5))) +
-    labs(x = "Latitude",y = "Longitude", caption = "Population size: 1 760 000 \n Population density per square kilometre: 4830") 
+    annotate("text", x=-73.6, y=45.432, label= "Montréal") + # add text on the map and coordinates tell where it should be placed
+    #guides(color = "Sampling locations") +
+    labs(x = "Latitude",y = "Longitude", caption = "Population size: 1 760 000 \n Population density per square kilometre: 4830") # Sets the labels for the x-axis and y-axis, and adds a caption at the bottom of the plot with population information.
+p_map3
 
-p_map1 + 
+#add north arrow and scalebar
+p_map3 + 
 annotation_north_arrow(location = "tl", which_north = "true", pad_x = unit(0.0, "in"), pad_y = unit(0.2, "in"),style = north_arrow_minimal) + 
 ggsn::scalebar(x.min=-74.0,x.max=-73.48,y.min=45.38,y.max=45.73, transform=TRUE, location = "bottomright",dist_unit = "km", dist=6, st.bottom = TRUE, st.size = 2)
-p_map1
 
 ```
  
