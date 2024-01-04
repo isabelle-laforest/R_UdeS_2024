@@ -136,6 +136,8 @@ We have moss species, but we also are interested how bacterial diversity differ 
 
 Let's plot this!
 
+Useful links: #https://ggplot2.tidyverse.org/reference/theme.html
+
 ```{r}
 View(moss_data)
 
@@ -161,15 +163,337 @@ plot5b <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(
   ylab("Bacterial diversity (Shannon index)") 
 plot5b
 
-#we need to modify the theme of our plot 
+#we need to modify the THEME of our plot 
+#THEME is a set of aesthetic choices that affect the non-data display of a plot. This includes the display of background, grids, axis, ticks, labels, title, legend, and other non-data elements
+#All these changes can be done in the THEME
 plot5c <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
   geom_boxplot(alpha = 0.9) +
-    facet_wrap(~ Species, scale="free") +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+  geom_point(position=position_jitterdodge(dodge.width=0.7,    
+  seed=0.5),alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank())
+plot5c
+
+#In the THEME we can:
+#1. change ext Size and Font: 
+plot5d <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
   scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
  geom_point(position=position_jitterdodge(dodge.width=0.7, seed=0.5),alpha=0.4,show.legend = FALSE) +
   ylab("Bacterial diversity (Shannon index)")+
-  theme(strip.text.x = element_blank())
-plot5c
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank())+
+  theme(text = element_text(size = 12),
+  axis.title = element_text(size = 13, face = "bold"),
+  axis.text = element_text(size = 10))
+ plot5d
+
+ #2. MOdify legend position and titles
+ 
+ plot5e <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill =   
+                                factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+ geom_point(position=position_jitterdodge(dodge.width=0.7,seed=0.5),alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank(),
+  text = element_text(size = 12),
+  axis.title = element_text(size = 13, face = "bold"),
+  axis.text = element_text(size = 10),
+  legend.position = "bottom",
+  legend.title = element_blank(),
+  legend.text = element_text(size = 10))
+ 
+ plot5e
+
+#3. Change the name of the legend:
+#+ labs(fill = "Compartment")
+ plot5f <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill =   
+                                factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+ geom_point(position=position_jitterdodge(dodge.width=0.7,seed=0.5),alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank(),
+  text = element_text(size = 12),
+  axis.title = element_text(size = 13, face = "bold"),
+  axis.text = element_text(size = 10),
+  legend.position = "right",
+  legend.text = element_text(size = 10)) +
+  labs(fill = "Compartment")
+ 
+ plot5f
+ 
+ #+  labs(x = "Species", fill = "Compartment")
+  plot5f <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill =   
+                                factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+ geom_point(position=position_jitterdodge(dodge.width=0.7,seed=0.5),alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank(),
+  text = element_text(size = 12),
+  axis.title = element_text(size = 13),
+  axis.text = element_text(size = 10),
+  legend.position = "right",
+  legend.text = element_text(size = 10)) +
+   labs(x = "Moss species", fill = "Compartment")
+ 
+ plot5f
+ 
+ #remove gridlines
+ 
+  plot5f <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill =   
+                                factor(Compartment))) +
+  geom_boxplot(alpha = 0.9) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels=c("Brown","Green")) +
+ geom_point(position=position_jitterdodge(dodge.width=0.7,seed=0.5),
+            alpha=0.4,show.legend = FALSE) +
+  ylab("Bacterial diversity (Shannon index)")+
+  facet_wrap(~ Species, scale="free") +
+  theme(axis.text.x = element_blank(),
+  text = element_text(size = 12),
+  axis.title = element_text(size = 13),
+  axis.text = element_text(size = 10),
+  legend.position = "right",
+  legend.text = element_text(size = 10),
+  panel.grid.major = element_blank(), # Remove major gridlines
+  panel.grid.minor = element_blank(), # Remove minor gridlines
+  panel.background = element_rect(fill = "white", colour = "white")) +
+  labs(x = "Moss species", fill = "Compartment")
+ 
+ plot5f
+ 
+```
+
+What if we want to add summary statistics?
+We need to calculate it outside plot and then add it to the plot as an extra layer
+```{r}
+install.packages("ggsignif")
+library(ggsignif)
+
+#Let's say we have run our test and know the summery statistics
+p_values <- data.frame(
+  Species = c('Polytrichum piliferum', 'Polytrichum juniperinum','Polytrichum commune','Dicranum undulatum'),
+  Compartment = c('Brown', 'Green'), # Replace with actual compartment names if needed
+  p_value = c(0.032, 0.045, 0.001, 0.005), # Replace with actual p-values from your tests
+  ypos = c(7.8, 7.9) # Replace with the y-axis positions where you want the p-values to appear
+)
+
+plot5h <- plot5f +
+  geom_text(
+    data = p_values,
+    aes(x = Species, y = ypos, label = paste0("p = ", p_value)),
+    size = 4,
+    vjust = 1,
+    hjust = -0.6)
+
+plot5h
+
+
+
+#MORE complicated example
+library(tidyverse)
+library(reshape2)
+library(ggpubr)
+
+model <- lm (Shannon ~ Compartment + Species, data = moss_data)
+comp_pairwise <- emmeans(model, pairwise ~ Compartment |Species, adjust= "tukey")
+
+summary(comp_pairwise) # you get all the p-values and effect sizes here 
+p.val.test<-pwpm(comp_pairwise, means = FALSE, flip = TRUE, reverse = TRUE)
+
+# all this code to make the stars
+p.val.test <- p.val.test$`Species = Polytrichum juniperinum` # this only looks at ONE HOST AT A TIME. 
+
+p.val.test<-sub("[<>]", "", p.val.test) # is a character 
+p.matx<-matrix(as.numeric((p.val.test)),nrow = length(p.val.test[,1]),
+               ncol = length(p.val.test[,1])) #if your factor has 5 levels ncol and nrow=5
+rownames(p.matx) <- colnames(p.matx) <-colnames(p.val.test)
+p.matx[upper.tri(p.matx, diag=FALSE)] <- NA
+stat.test<-subset(melt(p.matx),!is.na(value))
+names(stat.test)<-c("group1","group2","p.adj")
+stat.test[stat.test$p.adj<=0.001,"p.adj.signif"]<-"***"
+stat.test[stat.test$p.adj>0.001 & stat.test$p.adj<=0.01,"p.adj.signif"]<-"**"
+stat.test[stat.test$p.adj>0.01 & stat.test$p.adj<=0.05,"p.adj.signif"]<-"*"
+stat.test[ stat.test$p.adj>0.05,"p.adj.signif"]<-"ns"
+test<-mc_tribble(stat.test) # copy & paste the OUTPUT of this line before the line of ggboxplot!!
+
+# makes a tibble table with the p-values, and where they should go 
+comp_pval <- tribble(
+  ~Species, ~group1, ~group2, ~p.adj, ~p.adj.signif,
+  "P_commune","Green","Brown", 1e004,"***", 
+  "P_juniperinum","Green","Brown", 0.0445,"*",
+  "P_piliferum", "Green", "Brown", 0.0102, "**"
+  )
+
+ 
+ plot5f + stat_pvalue_manual(comp_pval,
+                             y.position = max(div_plots$Shannon)+sd(div_plots$Shannon),
+                             x.position = div_plots$Species,
+                             color = "black",
+                             size = 8,
+                             bracket.size = 1)
+```
+Ok, boxplots are nice, but we also want to show a data distribution. How can we do that?
+We can use raincloud plots
+
+
+
+```{r}
+install.packages("ggdist")
+library(ggdist)
+
+
+plot5g <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  # Half-violin plot (or just the "line" of the density)
+  stat_halfeye(
+    position = position_dodge(width = 0.8),
+    adjust = 1.5,  # Adjust this for smoothing
+    .width = 0.5  # Control the width of the density plot
+  ) +
+  # Point data for individual observations
+  geom_point(
+    position = position_jitterdodge(dodge.width = 0.8),
+    alpha = 0.4,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels = c("Brown", "Green")) +
+  ylab("Bacterial diversity (Shannon index)") +
+  facet_wrap(~ Species, scale = "free") +
+  theme(
+    axis.text.x = element_blank(),
+    text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    axis.text = element_text(size = 10),
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    panel.grid.major = element_blank(), # Remove major gridlines
+    panel.grid.minor = element_blank(), # Remove minor gridlines
+    panel.background = element_rect(fill = "white", colour = "white")
+  ) +
+  labs(x = "Moss species", fill = "Compartment")
+
+plot5g
+
+
+plot5r <- plot5g +
+  geom_text(
+    data = p_values,
+    aes(x = Species, y = ypos, label = paste0("p = ", p_value)),
+    size = 4,
+    vjust = 1,
+    hjust = -0.6)
+
+plot5r
+
+
+#what if we had more normally distributed data and more data points
+moss_datanew <- read.csv("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/Courses/R course visualization with ggplot/Data/moss_datanew.csv", sep = ",")
+
+plotnew <- ggplot(moss_datanew, aes(x = factor(Species), y = Shannon, fill = factor(Compartment))) +
+  # Half-violin plot (or just the "line" of the density)
+  stat_halfeye(
+    position = position_dodge(width = 0.6),
+    adjust = 1.1,  # Adjust this for smoothing
+    .width = 0.25  # Control the width of the density plot
+  ) +
+  geom_boxplot(
+    width = 0.2,  # Narrower boxplot width to fit inside the violins
+    position = position_dodge(width = 0.6),
+    alpha = 0.5
+  ) +
+  # Point data for individual observations
+  geom_point(
+    position = position_jitterdodge(dodge.width = 0.6),
+    alpha = 0.4,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(values = c("salmon4", "darkolivegreen"), labels = c("Brown", "Green")) +
+  ylab("Bacterial diversity (Shannon index)") +
+  facet_wrap(~ Species, scale = "free") +
+  theme(
+    axis.text.x = element_blank(),
+    text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    axis.text = element_text(size = 10),
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    panel.grid.major = element_blank(), # Remove major gridlines
+    panel.grid.minor = element_blank(), # Remove minor gridlines
+    panel.background = element_rect(fill = "white", colour = "white")
+  ) +
+  labs(x = "Moss species", fill = "Compartment")
+
+plotnew
+
+
 
 ```
+Exercise
+Using this mock dataset of bioassay results create box plots. 
+
+1. Start with a simple boxplot, 
+2. Then add colors/fills for Treatments, 
+3. Try faceting by Time, 
+4. Edit theme
+
+```{r}
+bioassay <- read.csv("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/Courses/R course visualization with ggplot/Data/bioassay_data.csv", sep = ",")
+
+
+# 1. Start with a simple boxplot
+simple_boxplot <- ggplot(bioassay, aes(x = Group, y = Response)) +
+  geom_boxplot()
+simple_boxplot
+
+# 2. Then add colors/fills for Treatments
+fill <- ggplot(bioassay, aes(x = Group, y = Response, fill = Group)) +
+  geom_boxplot()
+fill
+
+# 3. Try faceting by Time
+faceted_boxplot <- ggplot(bioassay, aes(x = Group, y = Response, fill = Group)) +
+  geom_boxplot() +
+  facet_wrap(~ Timepoint)
+faceted_boxplot
+
+
+# 4. Edit theme
+# Define custom colors for the treatment groups
+install.packages("tidyquant")
+library(tidyquant)
+
+beautiful_boxplot <- faceted_boxplot +
+    scale_fill_tq() +
+  theme_minimal(base_size = 14) +
+  theme(
+    strip.text = element_text(face = "bold", color = "black"),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    legend.box.background = element_blank(),
+    legend.box.margin = margin(0, 0, 0, 0),
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, color = "grey50"),
+    axis.text.y = element_text(color = "grey50"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "grey50", fill = NA, size = 1), # Adds panel outline
+    panel.spacing = unit(2, "lines") # Adjust the spacing between facets
+  ) +
+  labs(
+    x = "Treatment",
+    y = "Value"
+  ) +
+  guides(fill = guide_legend(title_position = "top", title_hjust = 0.5))
+
+# Display the themed boxplot with panel outlines
+print(beautiful_boxplot)
+```
+
 
