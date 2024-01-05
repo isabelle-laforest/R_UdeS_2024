@@ -49,7 +49,7 @@ dataformaps$Long <- as.numeric(as.character(dataformaps$Long))
 #To use the API key, you should set it with register_google(key = "your_api_key") before calling get_googlemap. Replace "your_api_key" with your actual Google API key.
 #
 #to access maps in Googple maps you need API key. Call it using the key below:
-register_google(key = "AIzaSyB7ujAyTHJ5NCnRKyfz6YRjDzr9JEEboyo")
+register_google(key = "")
 
 # get map from Google maps by providing coordinates of the center of the city
 map1 = get_googlemap(center = c(-73.616986, 45.489037), color='bw', maptype='terrain', 
