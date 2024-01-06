@@ -10,7 +10,7 @@ library(tidyverse)
 
 ## Data preparation
 
-The data : Microbial families abundance by sample.
+The data : Microbial Order abundance by sample.
 
 We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial Phylum identified, the count represents the absolute number of sequences in a sample that were attributed to that Phylum. We want to compare these numbers across compartments and hosts.
 
@@ -24,7 +24,7 @@ head(seq_count)
 seq_count %>% 
   select(Sample, Host, Compartment) %>% # ignore the seq_count and Phylum columns
   unique %>% # Keep one line per unique combinations of these variables
-  dplyr::summarise(n = n(), # count the number of samples for each
+  dplyr::summarise(n_samples = n(), # count the number of samples for each
                    .by = c('Host', 'Compartment'))
 ```
 The columns whose values are not numbers are considered "character" columns. You can see this by looking at the structure of your object, where "chr" means character and "int" means integer.
@@ -47,7 +47,7 @@ There, you can see that our four variables are now factors and you can validate 
 
 ## Barplot : Phylum 
 
-We want to look at how microbial families are distributed across our samples using their sequence counts. We'll start very simple, by using the sum of all samples for each Phylum.
+We want to look at how microbial Orders are distributed across our samples using their sequence counts. We'll start very simple, by using the sum of all samples for each Phylum.
 
 ```{r}
 ggplot(seq_count, aes(x = Seq_count, y = Phylum)) + 
@@ -96,6 +96,7 @@ ggplot(seq_count, aes(y = Host, x = Seq_count)) +
   geom_bar(aes(fill = Phylum),
            stat = 'identity') # Notice:we don't use the "dodge" option, so the counts stack.
 ```
+
 How can we look at each compartment separately? Faceting will help us !
 ```{r}
 ggplot(seq_count, aes(y = Host, x = Seq_count)) + 
