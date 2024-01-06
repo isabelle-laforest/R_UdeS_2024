@@ -5,7 +5,7 @@ Author: Masha Faticov
 ---
 
 Load data:
-- moss bacteria from Norther Quebec, 
+- moss bacteria from Northern Quebec, 
 - measured bacterial richness from 4 different moss species and two compartments
 - estimated diversity and richness of bacteria
 
