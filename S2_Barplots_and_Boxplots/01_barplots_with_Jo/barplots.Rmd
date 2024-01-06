@@ -1,0 +1,14 @@
+---
+title: "barplots_ggplot"
+date: "2024-01-06"
+Author: Jonathan Rondeau-Leclaire
+---
+
+The data : Bacterial species abundance by sample.
+We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial species identified, the count represents the absolute number of sequences in a sample that were attributed to that species. We want to compare these numbers across compartments and hosts.
+
+First, let's have a look at the data: 
+
+```{r setup, include=FALSE}
+moss_data <- read.csv("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/Courses/R course visualization with ggplot/Data/mossdata.csv", sep=';', header =TRUE)
+```
