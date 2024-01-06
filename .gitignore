@@ -1,0 +1,9 @@
+*Rproj*
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user
+.Rproj
+*.bak*
+*.gz
+archive/
