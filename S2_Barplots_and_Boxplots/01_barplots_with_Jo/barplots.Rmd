@@ -18,7 +18,7 @@ First, let's have a look at the data:
 
 ```{r}
 # Import the data file
-seq_count <- read.delim("sequence_counts.tsv") # by default, read.delim assumes the file has a header, and that it is separated by tabulations ("\t")
+seq_count <- read.delim("../../Data/sequence_counts.tsv") # by default, read.delim assumes the file has a header, and that it is separated by tabulations ("\t")
 head(seq_count)
 # How many samples do we have by group and compartment ?
 seq_count %>% 

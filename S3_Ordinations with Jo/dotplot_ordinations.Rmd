@@ -1,0 +1,70 @@
+---
+title: "barplots_ggplot"
+date: "2024-01-06"
+Author: Jonathan Rondeau-Leclaire
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+## What is an ordination? 
+
+Ordinations are a group of multivariate statistical analysis techniques that allow to reduce the dimensionality of the data we are looking at. Principal Coordinates Analysis (PCoA) is an example that is very commonly used in ecology and biology. In very broad terms, it allows to measure the dissimilarity between different observations (samples) based on the multiple data points (variables). Since this is a data visualization workshop, we're not going to focus on the statistics, but the exploratory visualization of PCoAs. Note that the also popular Principal Components Analysis is a special case of PCoA where the dissimilarity between samples corresponds to the linear (euclidean) distance between them. There are many other types of ordinations with different use cases (e.g. NMDS).
+
+#### The essential :
+For the sake of this exercise, suffice to remember that _each point represents a sample_, and that the point's positions relative to one another show how different these samples are based on the data on which the ordination was performed (in our case, microbial species abundance). The further apart two points are, the less similar these samples are.
+
+## Dot plots
+
+We start with a simple data frame of our 131 samples and their coordinates (x and y) on the ordination. These coordinates are the result of a PCoA that was performed on the species abundance table.
+
+```{r}
+pcoa <- read.delim("../Data/pcoa.tsv")
+
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Host)) 
+```
+
+We might also look at the compartments using the same technique :
+```{r}
+comp_colours <- c("lightsalmon4", "springgreen4")
+
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Compartment)) + # ***
+  scale_colour_manual(values = comp_colours) # ***
+```
+
+The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
+
+```{r}
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Compartment)) +
+  scale_colour_manual(values = comp_colours) +
+  stat_ellipse(geom = "polygon", 
+               alpha = 0.2, 
+               aes(fill = Compartment)) # ***
+```
+
+All right, but the colours ain't right! That's because geom_points uses a 'colour' aesthetic to add colour to the points, whereas stat_ellipse uses a 'fill' aesthetic, just like the barplots and boxplots. Let's fix that: 
+
+```{r}
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Compartment)) +
+  scale_colour_manual(values = comp_colours) +
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Compartment)) +
+  scale_fill_manual(values = comp_colours) # ***
+```
+
+What if we _also_ wanted to see the host species on that plot? We can use another geom_point aesthetics, 'shape'. As an exercise, try to make a new plot where 
+1. The points are coloured by host 
+2. The points are shaped by Compartment
+3. There is one elipses for each host
+4. Add a title to your plot
+
+```{r}
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Host, shape = Compartment)) + # ***
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host))
+```
+
