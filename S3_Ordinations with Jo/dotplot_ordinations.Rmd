@@ -57,16 +57,19 @@ All right, but the colours ain't right! That's because geom_points uses a 'colou
 
 ### Exercise
 What if we _also_ wanted to see the host species on that plot? We can use another geom_point aesthetics, 'shape'. As an exercise, try to make a new plot where 
+
 1. The points are coloured by host 
 2. The points are shaped by Compartment
 3. There is one elipses for each host
 4. Add a title to your plot
 5. Change the plot theme
 
-```{r}
+```{r, include = FALSE}
 ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Host, shape = Compartment)) + # ***
-  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host))
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host)) +
+  labs(title = "PCoA on microbiome communities of boreal moss samples.") + 
+  theme_linedraw()
 ```
 
 ### Gradient effect

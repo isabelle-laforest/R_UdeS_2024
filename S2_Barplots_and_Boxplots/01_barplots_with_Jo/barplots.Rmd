@@ -93,9 +93,8 @@ ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) +
   geom_errorbar(aes(xmin = mean_count - sd_count, 
                     xmax = mean_count + sd_count),
                 width = 0.3, # size of the "caps"
-                size = 0.2, # thickness
+                linewidth = 0.2, # thickness
                 position = position_dodge(width = 1)) # same as geom_col
-
 ```
 
 Since plots are meant to be pretty, let's do a couple more things: 
@@ -116,7 +115,7 @@ myplot <- # save this plot as an object
   geom_col(position = position_dodge(width = 0.7), # cluster columns by family
            width = 0.7) + # readjust the columns so they don't overlap
   geom_errorbar(aes(xmin = mean_count - sd_count, xmax = mean_count + sd_count),
-                width = 0.3, size = 0.2, position = position_dodge(width = 0.7)) +
+                width = 0.3, linewidth = 0.2, position = position_dodge(width = 0.7)) +
   scale_fill_manual(values = comp_colours) + # follows factor levels
   labs(title = "Family sequence counts by compartment.", # Title
        x = "Mean of sample sequence counts") + # meaningful label
