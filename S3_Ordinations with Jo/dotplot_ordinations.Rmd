@@ -33,7 +33,8 @@ comp_colours <- c("lightsalmon4", "springgreen4")
 (pcoa_comp <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Compartment)) + # ***
   scale_colour_manual(values = comp_colours) # ***
-) # Notice I'm saving this plot, because we will be building on it.
+) # Notice I'm saving this plot as an object, because we will be building on it.
+# Wrapping in () is equivalent to calling the pcoa_comp object afterwards.
 ```
 
 The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.

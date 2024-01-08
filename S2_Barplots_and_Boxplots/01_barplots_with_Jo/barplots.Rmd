@@ -177,7 +177,9 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
              scales="free") # allows different x-axis scales for each facet
 ```
 
-That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the number of sequences is usually much smaller in the green compartment. One way to solve this is to normalize to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data:
+That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the total number of sequences is often very different between compartments, making it hard to tell if some families are relatively more or less represented. 
+
+One way to solve this is to normalize the counts to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data:
 
 ```{r}
 ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
