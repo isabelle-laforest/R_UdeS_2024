@@ -60,7 +60,8 @@ All right, but the colours ain't right! That's because geom_points uses a 'colou
 ```{r}
 (pcoa_comp +
   stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Compartment)) +
-  scale_fill_manual(values = comp_colours) # ***
+  scale_fill_manual(values = comp_colours) + # ***
+  theme_minimal()
 )
 ```
 
@@ -78,7 +79,7 @@ ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Host, shape = Compartment)) + # ***
   stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host)) +
   labs(title = "PCoA on microbiome communities of boreal moss samples.") + 
-  theme_linedraw()
+  theme_bw() + theme(panel.grid = element_blank())
 ```
 
 ### Gradient effect
