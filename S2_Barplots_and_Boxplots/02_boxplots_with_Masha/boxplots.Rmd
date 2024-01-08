@@ -10,7 +10,8 @@ Load data:
 - estimated diversity and richness of bacteria
 
 ```{r setup, include=FALSE}
-moss_data <- read.csv("C:/Users/maria/Dropbox/Postdoc_Sherbrooke/Courses/R course visualization with ggplot/Data/mossdata.csv", sep=';', header =TRUE)
+library(ggplot2)
+moss_data <- read.csv("../../Data/mossdata.csv", sep=';', header =TRUE)
 ```
 
 Question of the study:
@@ -274,7 +275,7 @@ plot5d <- ggplot(moss_data, aes(x = factor(Species), y = Shannon, fill = factor(
 What if we want to add summary statistics?
 We need to calculate it outside plot and then add it to the plot as an extra layer
 ```{r}
-install.packages("ggsignif")
+#install.packages("ggsignif")
 library(ggsignif)
 
 #Let's say we have run our test and know the summery statistics
@@ -346,7 +347,7 @@ We can use raincloud plots
 
 
 ```{r}
-install.packages("ggdist")
+#install.packages("ggdist")
 library(ggdist)
 
 
@@ -466,7 +467,7 @@ faceted_boxplot
 
 # 4. Edit theme
 # Define custom colors for the treatment groups
-install.packages("tidyquant")
+#install.packages("tidyquant")
 library(tidyquant)
 
 beautiful_boxplot <- faceted_boxplot +

@@ -10,9 +10,9 @@ library(tidyverse)
 
 ## Data preparation
 
-The data : Microbial Order abundance by sample.
+The data : Microbial family abundance by sample.
 
-We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial Phylum identified, the count represents the absolute number of sequences in a sample that were attributed to that Phylum. We want to compare these numbers across compartments and hosts.
+We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial Family identified, the count represents the absolute number of sequences in a sample that were attributed to that Family. We want to compare these numbers across compartments and hosts.
 
 First, let's have a look at the data: 
 
@@ -22,7 +22,7 @@ seq_count <- read.delim("../../Data/sequence_counts.tsv") # by default, read.del
 head(seq_count)
 # How many samples do we have by group and compartment ?
 seq_count %>% 
-  select(Sample, Host, Compartment) %>% # ignore the seq_count and Phylum columns
+  select(Sample, Host, Compartment) %>% # ignore the seq_count and Family columns
   unique %>% # Keep one line per unique combinations of these variables
   dplyr::summarise(n_samples = n(), # count the number of samples for each
                    .by = c('Host', 'Compartment'))
@@ -45,26 +45,26 @@ str(seq_count)
 
 There, you can see that our four variables are now factors and you can validate the number of levels for each. 
 
-## Barplot : Phylum 
+## Barplot : Family 
 
-We want to look at how microbial Orders are distributed across our samples using their sequence counts. We'll start very simple, by using the sum of all samples for each Phylum.
+We want to look at how microbial families are distributed across our samples using their sequence counts. We'll start very simple, by using the sum of all samples for each Family.
 
 ```{r}
-ggplot(seq_count, aes(x = Seq_count, y = Phylum)) + 
-  geom_col()
+ggplot(seq_count, aes(x = mean_count, y = Family)) + 
+  geom_col() 
 ```
 
 That's nice, but now we'd like to see if these counts differ much across compartments, i.e. the green vs. the brown part of the plants. 
 
 ```{r}
-ggplot(seq_count, aes(x = Seq_count, y = Phylum)) + 
+ggplot(seq_count, aes(x = Seq_count, y = Family)) + 
   geom_col(aes(fill = Compartment)) 
 ```
 
 That's not bad, but we might want to have each column side-by-side insteade of stacked on top of each other. The "position" argument is going to help us here. While we're at it, let's use some proper colours:
 
 ```{r}
-ggplot(seq_count, aes(x = Seq_count, y = Phylum)) + 
+ggplot(seq_count, aes(x = Seq_count, y = Family)) + 
   geom_col(aes(fill = Compartment), 
            position = "dodge") # Dodge the columns, so we can read the counts
 ```
@@ -77,30 +77,30 @@ Since plots are meant to be pretty, let's do a couple more things:
 ```{r}
 comp_colours <- c("lightsalmon4", "springgreen4")
 
-ggplot(seq_count, aes(x = Seq_count, y = Phylum)) + 
+ggplot(seq_count, aes(x = Seq_count, y = Family)) + 
   geom_col(aes(fill = Compartment), position = "dodge") + 
   scale_fill_manual(values = comp_colours) + # follows factor levels
-  labs(title = "Total Phylum sequence counts by compartment.",
+  labs(title = "Total Family sequence counts by compartment.",
        x = "Sum of sequence counts") +
   theme_minimal()
 ```
 
 ## Barplots with facets
 
-A different way of looking at the data could be to compare Host and Compartment at the same time. To visualize the Orders across these two sample data, we can use faceting.
+A different way of looking at the data could be to compare Host and Compartment at the same time. To visualize the families across these two sample data, we can use faceting.
 
 In this case, we'll start by plotting the counts for each host
 
 ```{r}
 ggplot(seq_count, aes(y = Host, x = Seq_count)) + 
-  geom_bar(aes(fill = Phylum),
+  geom_bar(aes(fill = Family),
            stat = 'identity') # Notice:we don't use the "dodge" option, so the counts stack.
 ```
 
 How can we look at each compartment separately? Faceting will help us !
 ```{r}
 ggplot(seq_count, aes(y = Host, x = Seq_count)) + 
-  geom_bar(aes(fill = Phylum), stat = 'identity') +
+  geom_bar(aes(fill = Family), stat = 'identity') +
     # This is where the magic happens:
   facet_grid(cols = vars(Compartment), # Adds facets
              scales="free") # allows different x-axis scales for each facet
@@ -110,7 +110,7 @@ That's fine, but it reveals a weakness in the way we are presenting data. Indeed
 
 ```{r}
 ggplot(seq_count, aes(y = Host, x = Seq_count)) + 
-  geom_bar(aes(fill = Phylum), stat = 'identity', 
+  geom_bar(aes(fill = Family), stat = 'identity', 
            position = 'fill') + # normalises total values to 1
   facet_grid(cols = vars(Compartment)) +
   xlab("Proportion of sequence counts") # not absolute values

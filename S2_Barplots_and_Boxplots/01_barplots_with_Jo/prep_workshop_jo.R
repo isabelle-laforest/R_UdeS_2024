@@ -6,22 +6,23 @@ p_load(tidyverse, phyloseq, vegan, DESeq2, microbiome)
 psMoss <- readRDS("data/psMossMAGs.RDS")
 
 melt <- psMoss %>% psmelt %>% 
-  select(OTU, Sample, Abundance, Compartment, Microsite, Host, Phylum)
+  select(OTU, Sample, Abundance, Compartment, Microsite, Host, Family)
 
 topTaxa <- melt %>%  
-  group_by(Phylum) %>% # melt the table and group by tax level
+  group_by(Family) %>% # melt the table and group by tax level
   summarise(Abundance = sum(Abundance)) %>% # find most overall abundant taxa
   arrange(desc(Abundance)) %>%  # Species them 
   mutate(aggTaxo = as.factor(case_when( # aggTaxo will become the plot legend
-    row_number()<=8 ~ Phylum, #+++ We'll need to manually order the species!
-    row_number()>8~'Others'))) %>%  # +1 to include the Others section!
+    row_number()<=10 ~ Family, #+++ We'll need to manually order the species!
+    row_number()>10~'Others'))) %>%  # +1 to include the Others section!
   select(-Abundance)
 
-subset <- left_join(melt, topTaxa, by = 'Phylum') %>% 
-  aggregate(Abundance~Sample+aggTaxo+Host+Compartment, # Abundance is aggregated...
-            data=., FUN = sum) %>% 
-  dplyr::rename(Phylum = aggTaxo) %>% 
-  dplyr::rename(Seq_count = Abundance)
+subset <- left_join(melt, topTaxa, by = 'Family') %>% 
+  group_by(Sample, aggTaxo, Host, Compartment) %>%
+  summarise(seq_count = sum(Abundance)) %>%
+  ungroup() %>% 
+  filter(aggTaxo != 'Others') %>% 
+  dplyr::rename(Family = aggTaxo) 
 
 write_tsv(subset, 'Data/sequence_counts.tsv')
 
@@ -41,6 +42,7 @@ distclr.mx <- psMoss %>% microbiome::transform('clr') %>%
   vegan::vegdist('euclidean')
 
 PCoA <- capscale(distclr.mx~1, distance = "euclidean")
+
 # dataframe with variables of interest
 pcoa.df <- data.frame(PCOA1 = PCoA %>% scores %$% sites %>% .[,1], 
                       PCOA2 = PCoA %>% scores %$% sites %>% .[,2]) %>%
