@@ -1,0 +1,439 @@
+---
+title: "" #ECL750<br>François Rousseu<br>Hiver 2021
+author: ""
+date: ""
+output:
+  html_document:
+    depth: 5
+    fig_height: 5
+    fig_width: 6
+    number_sections: no
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<script>
+    $(document).ready(function() {
+      $items = $('div#TOC li');
+      $items.each(function(idx) {
+        num_ul = $(this).parentsUntil('#TOC').length;
+        $(this).css({'text-indent': num_ul * 20, 'padding-left': 0});
+      });
+
+    });
+</script>
+```
+
+```{=html}
+<style>
+
+pre.r {
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+    font-size: 12pt;
+}
+
+pre code {
+  font-size: 12pt;
+}
+
+body {
+  font-size: 14pt;
+  margin-right: 5vw;
+  margin-left: 0vw;
+  /* max-width: 80vw; */
+}
+
+.main-container {
+    max-width: 100vw !important;
+} 
+
+#TOC {
+  font-size: 0.85vw;
+  border-color: white;
+  max-width: 15vw;
+  margin-top: 5vh;
+}
+
+.list-group-item.active:focus{
+    z-index: 2;
+    color: darkgreen;
+    background-color: #EEEEEE;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+.list-group-item.active:hover {
+    z-index: 2;
+    color: darkgreen;
+    background-color: #FFFFFF;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+.list-group-item.active{
+    z-index: 2;
+    color: darkgreen;
+    background-color: #FFFFFF;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+h1.title {
+  margin-top: 50px;
+  font-size: 42px;
+  color: DarkGreen;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 100vh;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  color: DarkGreen;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5 {
+  font-size: 42px;
+}
+
+
+.pres { /* write {.pres} next to each section to apply css  */
+   padding-top: 100px;
+   margin-bottom: 700px;
+}
+
+/* html{
+  scroll-behavior: smooth;
+} */
+
+
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, tidy=TRUE, error=TRUE, fig.align="center", fig.width=8, fig.height=6, cache=FALSE, message=FALSE)
+options(width=150)
+```
+
+<br>
+
+# Assembling, annotating and saving graphs
+
+## First some data
+
+<!-- Pour cet exercice, nous utiliserons une base de données ([pines.csv](https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv)) portant sur la croissance de jeunes Pins blancs (*Pinus strobus*) en lien avec avec l'utilisation d'un fertilisant, la déprédation par le Cerf de Virginie, la compétition avec la strate arbustive et l'espacement entre les individus. Cette base de données comporte plusieurs colonnes: -->
+
+```{r, message=FALSE, echo=FALSE, include=FALSE, warning= FALSE}
+library(ggplot2)
+
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
+d<-na.omit(d)
+head(d,3)
+```
+
+
+
+
+```{r, out.width="100%", fig.height=4,fig.width=7, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+library(ggplot2)
+
+#d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
+
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
+d<-na.omit(d)
+d$height[30]<-750
+
+head(d,3)
+```
+
+<br>
+
+- **height**: tree height
+- **width**: tree width
+- **height_ini**: initial tree height
+- **row**: row in the tree plantation
+- **col**: column in the tree plantation
+- **deer**: deer browsing (0 = no, 1 = yes)
+- **fert**: use of a fertilizer (0 = no, 1 = yes)
+- **spacing**: tree interspacing (10 or 15 m) 
+- **cover**: shrub cover (0 = none, 1 = low, 2 = moderate, 3 = high)
+
+
+### Make sure we're using factors
+
+```{r, out.width="100%", fig.height=4,fig.width=7, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+head(d,3)
+
+# Convert numerical treatments to factors
+cols <- c("deer", "fert", "cover", "spacing")
+d[cols] <- lapply(d[cols], factor)
+```
+
+
+
+### Add p values
+```{r, out.width="40%", fig.height=3,fig.width=4, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+m <- lm(height~fert,data=d)
+anova(m)
+
+fert <- ggplot(d,aes(fert,height)) +
+  geom_jitter(width=0.1, alpha=0.25) +
+  theme_light()
+  
+fert + annotate("text", x = 1.5, y = 650, label = "p < 0.001", size = 4)
+
+```
+
+
+### Plot plantation
+```{r, out.width="40%", fig.height=4,fig.width=3, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+g <- ggplot(d,aes(col,row,colour=fert))+
+       geom_point(size=1)+
+       theme_void()
+g
+```
+
+
+### Add annotations on the graph
+```{r, out.width="40%", fig.height=4,fig.width=3, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+g <- g + geom_segment(
+       x = 27, y = 10, xend = 18.75, yend = 5,
+       lineend = "round", linejoin = "round", linewidth = 1, 
+       arrow = arrow(length = unit(0.1, "inches")), colour = "grey") +
+     annotate("text", x = 27, y = 12, label = "Oups, no more fertilizer!", size = 3) +
+     coord_cartesian(clip = 'off')
+g
+
+```
+
+#### Challenge
+
+Build a graph for the effect of deer browsing on tree height. 
+
+Add a p value on the graph.
+
+Flag the outlier for which the height measured is a bit doubtful. 
+
+#### Solution
+
+```{r, out.width="40%", fig.height=3,fig.width=4, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+m <- lm(height~deer,data=d)
+anova(m)
+
+deer <- ggplot(d,aes(deer,height)) +
+  geom_jitter(width=0.1, alpha=0.25) +
+  theme_light()
+
+deer + annotate("text", x = 1.5, y = 650, label = "p = 0.01", size = 4) +
+       geom_segment(x = 1.5, y = 750, xend = 1.1, yend = 750, 
+         arrow = arrow(length = unit(0.1, "inches")), colour = "grey") +
+       annotate("text", x = 1.7, y = 750, label = "Outlier !", size = 4)
+
+```
+
+
+## Assembling with patchwork
+
+```{r, out.width="100%", fig.height=4,fig.width=7, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+
+cover <- ggplot(d,aes(cover,height))+
+  geom_jitter(width=0.1,alpha=0.25)+
+  theme_light()
+
+
+```
+
+## Package patchwork
+
+Assemble ggplots easily with the package. [patchwork](https://patchwork.data-imaginist.com/index.html)
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+library(patchwork)
+
+(fert+deer)/cover|g 
+
+
+```
+
+### Adjusting column sizes
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+library(patchwork)
+
+(fert+deer)/cover|g + plot_layout(widths = c(2, 1))
+
+
+```
+
+### More complex layouts
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+library(patchwork)
+
+spacing <- ggplot(d,aes(spacing, height))+
+  geom_jitter(width=0.1,alpha=0.25)+
+  theme_light()
+
+(fert|spacing|deer)/(cover|g)
+
+
+```
+
+
+### Adding a blank space
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+spacing <- ggplot(d,aes(spacing, height))+
+  geom_jitter(width=0.1,alpha=0.25)+
+  theme_light()
+
+(fert|spacing|deer)/(cover|plot_spacer()|g)
+
+
+```
+
+### More control on layout
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+layout <- "
+AABBCCEEEE
+##DDDDEEEE
+"
+
+fert + deer + spacing + cover + g + plot_layout(design = layout)
+
+```
+
+## Annotate with patchwork
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+fert + deer + spacing + cover + g + 
+  plot_layout(design = layout) +
+  plot_annotation(tag_levels = 'A')
+ 
+
+```
+
+### Adding titles
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+graph <- fert + deer + spacing + cover + g + 
+  plot_layout(design = layout) +
+  plot_annotation(tag_levels = 'A') +
+  plot_annotation(
+    title = 'What affects tree heights',
+    subtitle = 'Some things',
+    caption = 'Some outliers are present'
+  )
+
+graph
+
+```
+
+### Changing all plots
+```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
+
+graph <- graph & theme_dark() # use & to apply to all plots
+graph
+
+```
+
+
+## Saving graphs
+
+**3 methods**: 
+
+1. **ggsave**: save to a file with ggplot tools
+
+2. **png, pdf**: base R functions to save to a file
+
+3. Export from the graphic device in RStudio
+
+### Method 1
+<br><br>
+
+```{r}
+ggsave("/home/frousseu/Downloads/graph.png", graph, width = 20, height = 12, units = "cm", dpi = 300)
+
+ggsave("/home/frousseu/Downloads/graph.pdf", graph, width = 20, height = 12, units = "in", dpi = 300)
+```
+<br><br>
+More easily reproducible
+
+### Method 2
+<br><br>
+
+```{r, message = FALSE, results = "hide"}
+png("/home/frousseu/Downloads/graph.png",width=10,height=6,units="in",res=300) #open device
+graph # plot
+dev.off() # save and close device
+
+jpeg("/home/frousseu/Downloads/graph.jpg",width=10,height=6,units="in",res=300)
+graph
+dev.off()
+```
+
+
+### Method 3
+
+More interactive and easier to find a good layout, but less easily reproducible.
+<br><br>
+![](export_graph_rstudio.png)
+
+
+
+## Challenge
+
+<br>
+
+1. Create a single image with the effect of sexe and age on the number of parasites on top and the effect of mass on the bottom.
+
+2. Annotate graphs with letters.
+
+3. Apply a ggplot theme to all plots.
+
+4. Save the image using the `ggsave` function or your method of choice.
+
+<br><br>
+```{r, message = FALSE}
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv")
+head(d)
+```
+
+
+
+
+### Solution
+
+```{r, message = FALSE, warning = FALSE, results = "hold"}
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv")
+
+cols <- c("sexe","age")
+d[cols] <- lapply(d[cols],factor)
+
+g1 <- ggplot(d,aes(sexe,parasites)) + geom_jitter(colour="forestgreen", alpha=0.5)
+
+g2 <- ggplot(d,aes(age,parasites)) + geom_jitter(colour="forestgreen", alpha=0.5)
+
+g3 <- ggplot(d,aes(masse,parasites)) + geom_jitter(colour="forestgreen", alpha=0.5)
+
+hummers <- (g1|g2)/g3 + plot_annotation(tag_levels = "A") & theme_light(base_rect_size = 2)
+
+ggsave("/home/frousseu/Downloads/hummers.png", hummers, width = 20, height = 20, units = "cm")
+
+hummers
+
+```
+
+
