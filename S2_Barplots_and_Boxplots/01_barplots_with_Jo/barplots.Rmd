@@ -1,5 +1,5 @@
 ---
-title: "barplots_ggplot"
+title: "Introduction to bar/column plots with ggplot2."
 date: "2024-01-06"
 Author: Jonathan Rondeau-Leclaire
 ---
@@ -89,15 +89,16 @@ That's better. However, it could be useful to show how precise these means are. 
 
 ```{r}
 ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) + 
-  geom_col(position = position_dodge(width = 1)) + # slight modificatino
+  geom_col(position = position_dodge(width = 1)) + # slight modification
   geom_errorbar(aes(xmin = mean_count - sd_count, 
                     xmax = mean_count + sd_count),
                 width = 0.3, # size of the "caps"
                 linewidth = 0.2, # thickness
-                position = position_dodge(width = 1)) # same as geom_col
+                position = position_dodge(width = 1)) # same as in geom_col
 ```
 
 Since plots are meant to be pretty, let's do a couple more things: 
+
 1. Use some coherent colours (green and brown!)
 2. Remove the gray background (personal preference) by imposing a minimal theme
 3. Rename the x axis and add a plot title
@@ -131,7 +132,6 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
        width = 1600, height = 900, units = 'px', dpi = 150)
 ```
 
-
 ## Exercise
 
 Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the labs() functions). Do not add error bars
@@ -148,43 +148,42 @@ ggplot(aes(x = mean_count, y = Family, fill = Host)) +
            width = 0.8) + # readjust the columns so they don't overlap
   labs(title = "Family sequence counts by compartment.", # Title
        x = "Mean of sample sequence counts",
-       caption = "n=131 samples from the Québec Boreal Forest.",
+       caption = "n = 131 samples from the Québec Boreal Forest.",
        fill = "Host moss species") + # meaningful label
   theme_light(base_family = "Baskerville") +
   theme(plot.caption.position = "plot", # sends it all the way to the right.
         plot.title.position = "plot") # Sends it all the way to the left
-  
 ```
-
 
 ## Barplots with facets
 
 A different way of looking at the data could be to compare Host and Compartment at the same time. To visualize the families across these two sample data, we can use faceting. Notice that we are back to the original (non-summarised) data.
 
-In this case, we'll start by plotting the counts for each host
+In this case, we'll start by plotting the counts for each compartment
 
 ```{r}
-ggplot(seq_count, aes(y = Host, x = seq_count)) + 
+ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
   geom_col(aes(fill = Family))
       # Notice: we don't use the "dodge" option, so the counts stack.
 ```
 
-How can we look at each compartment separately? Faceting will help us !
+How can we look at each host separately? Faceting will help us !
+
 ```{r}
-ggplot(seq_count, aes(y = Host, x = seq_count)) + 
+ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
   geom_col(aes(fill = Family)) +
     # This is where the magic happens:
-  facet_grid(cols = vars(Compartment), # Adds facets
+  facet_grid(rows = vars(Host), # Adds facets
              scales="free") # allows different x-axis scales for each facet
 ```
 
-That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the number of sequences is usually much smaller in the green compartment. One way to solve this is to normalize to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data :
+That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the number of sequences is usually much smaller in the green compartment. One way to solve this is to normalize to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data:
 
 ```{r}
-ggplot(seq_count, aes(y = Host, x = seq_count)) + 
+ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
   geom_col(aes(fill = Family), 
            position = 'fill') + # normalises total values to 1
-  facet_grid(cols = vars(Compartment)) +
+  facet_grid(rows = vars(Host)) +
   xlab("Proportion of sequence counts") # not absolute values
 ```
 
