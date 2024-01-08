@@ -41,8 +41,16 @@ The patterns are much less obvious here. One way we can look at it is by tracing
 
 ```{r}
 (pcoa_comp +
-  stat_ellipse(geom = "polygon", 
-               alpha = 0.2, 
+  stat_ellipse(aes(fill = Compartment))
+)
+```
+
+We can fill those ellipses with a colour by specifying a particular "geom" argument and a transparency level: 
+
+```{r}
+(pcoa_comp +
+  stat_ellipse(geom = "polygon", # fill the ellipses
+               alpha = 0.2, # transparency 
                aes(fill = Compartment))
 )
 ```
