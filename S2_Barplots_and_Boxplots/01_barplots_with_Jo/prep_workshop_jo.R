@@ -22,7 +22,8 @@ subset <- left_join(melt, topTaxa, by = 'Family') %>%
   summarise(seq_count = sum(Abundance)) %>%
   ungroup() %>% 
   filter(aggTaxo != 'Others') %>% 
-  dplyr::rename(Family = aggTaxo) 
+  dplyr::rename(Family = aggTaxo) %>% 
+  arrange(Family)
 
 write_tsv(subset, 'Data/sequence_counts.tsv')
 
@@ -48,8 +49,9 @@ pcoa.df <- data.frame(PCOA1 = PCoA %>% scores %$% sites %>% .[,1],
                       PCOA2 = PCoA %>% scores %$% sites %>% .[,2]) %>%
   cbind(psMoss %>% 
           sample_data %>% 
-          data.frame %>% 
-          select(Host, Compartment)) %>% 
+          data.frame# %>% 
+#          select(Host, Compartment)
+) %>% 
   rownames_to_column('Sample')
 
 write_tsv(pcoa.df, 'Data/pcoa.tsv')

@@ -121,7 +121,7 @@ myplot <- # save this plot as an object
   labs(title = "Family sequence counts by compartment.", # Title
        x = "Mean of sample sequence counts") + # meaningful label
   theme_minimal(base_family = "Baskerville", # new font, and this theme removes gray background
-                base_size = 14) + # font size
+                base_size = 12) + # font size
   theme(panel.grid.major.y = element_blank()) # remove horizontal grid
 myplot
 ```
@@ -135,7 +135,7 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
 
 ## Exercise
 
-Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples (hint: look at the labs() function). Save this plot in a 1600:900 ratio picture.
+Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples (hint: look at the labs() function).
 
 ## Barplots with facets
 
@@ -145,14 +145,14 @@ In this case, we'll start by plotting the counts for each host
 
 ```{r}
 ggplot(seq_count, aes(y = Host, x = seq_count)) + 
-  geom_bar(aes(fill = Family),  # Using geom_bar instead of geom_col !
-           stat = 'identity')   # Notice:we don't use the "dodge" option, so the counts stack.
+  geom_col(aes(fill = Family))
+      # Notice: we don't use the "dodge" option, so the counts stack.
 ```
 
 How can we look at each compartment separately? Faceting will help us !
 ```{r}
-ggplot(seq_count, aes(y = Host, x = mean_count)) + 
-  geom_bar(aes(fill = Family), stat = 'identity') +
+ggplot(seq_count, aes(y = Host, x = seq_count)) + 
+  geom_col(aes(fill = Family)) +
     # This is where the magic happens:
   facet_grid(cols = vars(Compartment), # Adds facets
              scales="free") # allows different x-axis scales for each facet
@@ -161,8 +161,8 @@ ggplot(seq_count, aes(y = Host, x = mean_count)) +
 That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the number of sequences is usually much smaller in the green compartment. One way to solve this is to normalize to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data :
 
 ```{r}
-ggplot(seq_count, aes(y = Host, x = mean_count)) + 
-  geom_bar(aes(fill = Family), stat = 'identity', 
+ggplot(seq_count, aes(y = Host, x = seq_count)) + 
+  geom_col(aes(fill = Family), 
            position = 'fill') + # normalises total values to 1
   facet_grid(cols = vars(Compartment)) +
   xlab("Proportion of sequence counts") # not absolute values
