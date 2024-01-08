@@ -1,0 +1,107 @@
+---
+title: "barplots_ggplot"
+date: "2024-01-06"
+Author: Jonathan Rondeau-Leclaire
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+## What is an ordination? 
+
+Ordinations are a group of multivariate statistical analysis techniques that allow to reduce the dimensionality of the data we are looking at. Principal Coordinates Analysis (PCoA) is an example that is very commonly used in ecology and biology. In very broad terms, it allows to measure the dissimilarity between different observations (samples) based on the multiple data points (variables). Since this is a data visualization workshop, we're not going to focus on the statistics, but the exploratory visualization of PCoAs. Note that the also popular Principal Components Analysis is a special case of PCoA where the dissimilarity between samples corresponds to the linear (euclidean) distance between them. There are many other types of ordinations with different use cases (e.g. NMDS).
+
+#### The essential :
+For the sake of this exercise, suffice to remember that _each point represents a sample_, and that the point's positions relative to one another show how different these samples are based on the data on which the ordination was performed (in our case, microbial species abundance). The further apart two points are, the less similar these samples are in terms of their microbial composition.
+
+## Dot plots
+
+We start with a simple data frame of our 131 samples and their coordinates (x and y) on the ordination. These coordinates are the result of a PCoA that was performed on the species abundance table.
+
+```{r}
+pcoa <- read.delim("../Data/pcoa.tsv")
+
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Host)) 
+```
+
+We might also look at the compartments using the same technique :
+```{r}
+comp_colours <- c("lightsalmon4", "springgreen4")
+
+(pcoa_comp <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Compartment)) + # ***
+  scale_colour_manual(values = comp_colours) # ***
+) # Notice I'm saving this plot, because we will be building on it.
+```
+
+The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
+
+```{r}
+(pcoa_comp +
+  stat_ellipse(geom = "polygon", 
+               alpha = 0.2, 
+               aes(fill = Compartment))
+)
+```
+
+All right, but the colours ain't right! That's because geom_points uses a 'colour' aesthetic to add colour to the points, whereas stat_ellipse uses a 'fill' aesthetic, just like the barplots and boxplots. Let's fix that: 
+
+```{r}
+(pcoa_comp +
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Compartment)) +
+  scale_fill_manual(values = comp_colours) # ***
+)
+```
+
+### Exercise
+What if we _also_ wanted to see the host species on that plot? We can use another geom_point aesthetics, 'shape'. As an exercise, try to make a new plot where 
+1. The points are coloured by host 
+2. The points are shaped by Compartment
+3. There is one elipses for each host
+4. Add a title to your plot
+5. Change the plot theme
+
+```{r}
+ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Host, shape = Compartment)) + # ***
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host))
+```
+
+### Gradient effect
+
+What if we're interested in how a continuous variable relates to the dissimilarity between our samples ? Providing such a variable to the "colour" aesthetic excludes the use of ellipses, but can inform as well as to whether there seems to be a relationship with variables of interest.
+
+```{r}
+(pcoa_pH <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = SoilpH)) + # continuous scale
+  theme_light() +
+  theme(panel.grid = element_blank()) # remove the grid
+)
+```
+
+Typically, in a PCoA we indicate a % value on each axis label. That value is the proportion of the total data variance (inertia, to be more accurate) that each Principal Coordinate explains. Without diving further into the meaning of these values, suppose you would like to add such a value to your axis label. 
+
+```{r}
+pcoa_pH + 
+  labs(x = 'PCOA1 (15.2%)',
+       y = 'PCOA2 (9.8%)')
+```
+
+However, it is good practice to add those numbers dynamically. The reason for this is, imagine you've made all these pretty plots, but a few weeks (or months) later, for whatever reason you ended up removing two samples (maybe you decided they weren't good enough after all). You rerun your computations (including calculating your principal coordinates), so it's very probable these values will change. Sure, you can change them manually. But you might also forget. With dynamically generated values, you won't even have to think about it.
+
+Suppose these values were saved as an object earlier, when you computed your PCoA (not part of this workshop). They are given here, but usually you extract them from the results of the ordination process.
+
+```{r}
+PCOA1 <- 15.6 
+PCOA2 <- 9.2
+# lines and lines of code later...
+pcoa_pH + 
+  labs(x = paste0('PCOA1 (', PCOA1, ' %)'),
+       y = paste0('PCOA2 (', PCOA2, ' %)'))
+```
+The result is the same, but should the PCOA change, the plot will automatically be updated.
+
+
+
