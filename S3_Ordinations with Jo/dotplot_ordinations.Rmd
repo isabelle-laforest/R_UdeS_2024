@@ -33,7 +33,8 @@ comp_colours <- c("lightsalmon4", "springgreen4")
 (pcoa_comp <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Compartment)) + # ***
   scale_colour_manual(values = comp_colours) # ***
-) # Notice I'm saving this plot, because we will be building on it.
+) # Notice I'm saving this plot as an object, because we will be building on it.
+# Wrapping in () is equivalent to calling the pcoa_comp object afterwards.
 ```
 
 The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
@@ -57,16 +58,19 @@ All right, but the colours ain't right! That's because geom_points uses a 'colou
 
 ### Exercise
 What if we _also_ wanted to see the host species on that plot? We can use another geom_point aesthetics, 'shape'. As an exercise, try to make a new plot where 
+
 1. The points are coloured by host 
 2. The points are shaped by Compartment
 3. There is one elipses for each host
 4. Add a title to your plot
 5. Change the plot theme
 
-```{r}
+```{r, include = FALSE}
 ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Host, shape = Compartment)) + # ***
-  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host))
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Host)) +
+  labs(title = "PCoA on microbiome communities of boreal moss samples.") + 
+  theme_linedraw()
 ```
 
 ### Gradient effect
