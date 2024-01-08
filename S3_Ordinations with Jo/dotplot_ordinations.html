@@ -384,6 +384,17 @@ samples are in terms of their microbial composition.</p>
 <p>We start with a simple data frame of our 131 samples and their
 coordinates (x and y) on the ordination. These coordinates are the
 result of a PCoA that was performed on the species abundance table.</p>
+<pre class="r"><code>library(tidyverse) # Load required library</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.3     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>pcoa &lt;- read.delim(&quot;../Data/pcoa.tsv&quot;)
 
 ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +

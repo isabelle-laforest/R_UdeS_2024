@@ -4,10 +4,6 @@ date: "2024-01-06"
 Author: Jonathan Rondeau-Leclaire
 ---
 
-```{r, include=FALSE}
-library(tidyverse)
-```
-
 ## Data preparation
 
 The data : Microbial family abundance by sample.
@@ -17,10 +13,14 @@ We have 131 samples taken on four different plant hosts (mosses) on either the b
 First, let's have a look at the data: 
 
 ```{r}
+library(tidyverse) # Load required library
+
 # Import the data file
 seq_count <- read.delim("../../Data/sequence_counts.tsv") # by default, read.delim assumes the file has a header, and that it is separated by tabulations ("\t")
-head(seq_count)
-# How many samples do we have by group and compartment ?
+
+head(seq_count) # Look at the data
+
+# How many samples do we have by host and compartment ?
 seq_count %>% 
   select(Sample, Host, Compartment) %>% # ignore the seq_count and Family columns
   unique %>% # Keep one line per unique combinations of these variables
