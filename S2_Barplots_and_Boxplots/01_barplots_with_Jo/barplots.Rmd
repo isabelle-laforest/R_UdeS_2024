@@ -134,7 +134,28 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
 
 ## Exercise
 
-Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples (hint: look at the labs() function).
+Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the labs() functions). Do not add error bars
+
+```{r, include = FALSE}
+seq_count %>% 
+  group_by(Family, Host) %>% 
+  summarise(mean_count = mean(seq_count),     
+            sd_count = sd(seq_count),        # calculate SD
+            .groups = 'drop') %>% 
+
+ggplot(aes(x = mean_count, y = Family, fill = Host)) + 
+  geom_col(position = position_dodge(width = 0.8), # cluster columns by family
+           width = 0.8) + # readjust the columns so they don't overlap
+  labs(title = "Family sequence counts by compartment.", # Title
+       x = "Mean of sample sequence counts",
+       caption = "n=131 samples from the Québec Boreal Forest.",
+       fill = "Host moss species") + # meaningful label
+  theme_light(base_family = "Baskerville") +
+  theme(plot.caption.position = "plot", # sends it all the way to the right.
+        plot.title.position = "plot") # Sends it all the way to the left
+  
+```
+
 
 ## Barplots with facets
 
