@@ -376,8 +376,8 @@ head(seq_count) # Look at the data</code></pre>
 ## 4 S-1-POLJUN-B Acetobacteraceae P_juniperinum       Brown     15383
 ## 5 S-1-POLJUN-G Acetobacteraceae P_juniperinum       Green     27396
 ## 6 S-1-POLPIL-B Acetobacteraceae   P_piliferum       Brown     48578</code></pre>
-<pre class="r"><code># How many samples do we have by host and compartment ?
-seq_count %&gt;% 
+<p>How many samples do we have by host and compartment ?</p>
+<pre class="r"><code>seq_count %&gt;% 
   select(Sample, Host, Compartment) %&gt;% # ignore the seq_count and Family columns
   unique %&gt;% # Keep one line per unique combinations of these variables
   dplyr::summarise(n_samples = n(), # count the number of samples for each

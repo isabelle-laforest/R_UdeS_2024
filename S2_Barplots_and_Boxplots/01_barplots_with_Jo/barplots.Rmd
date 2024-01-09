@@ -10,7 +10,6 @@ Author: Jonathan Rondeau-Leclaire
 library(tidyverse) # Load required library
 ```
 
-
 The data : Microbial family abundance by sample.
 
 We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial Family identified, the count represents the absolute number of sequences in a sample that were attributed to that Family. We want to compare these numbers across compartments and hosts.
@@ -22,8 +21,10 @@ First, let's have a look at the data:
 seq_count <- read.delim("../../Data/sequence_counts.tsv") # by default, read.delim assumes the file has a header, and that it is separated by tabulations ("\t")
 
 head(seq_count) # Look at the data
+```
 
-# How many samples do we have by host and compartment ?
+How many samples do we have by host and compartment ?
+```{r}
 seq_count %>% 
   select(Sample, Host, Compartment) %>% # ignore the seq_count and Family columns
   unique %>% # Keep one line per unique combinations of these variables
