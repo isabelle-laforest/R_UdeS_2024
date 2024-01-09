@@ -212,7 +212,7 @@ g
 
 ```
 
-#### Challenge
+### Challenge
 
 Build a graph for the effect of deer browsing on tree height. 
 
@@ -254,7 +254,7 @@ cover <- ggplot(d,aes(cover,height))+
 
 ```
 
-## Package patchwork
+### Package patchwork
 
 Assemble ggplots easily with the package [patchwork](https://patchwork.data-imaginist.com/index.html).
 ```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
@@ -394,7 +394,7 @@ More interactive and easier to find a good layout, but less easily reproducible.
 
 
 
-## Challenge
+### Challenge
 
 ```{r, message = FALSE, include = FALSE, echo = FALSE}
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv", header = TRUE)
@@ -421,7 +421,7 @@ head(d)
 
 <!-- 
 
-### Solution
+#### Solution
 
 
 ```{r, message = FALSE, warning = FALSE, results = "hold"}
