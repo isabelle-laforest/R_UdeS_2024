@@ -93,7 +93,7 @@ h1.title {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 100vh;
+  margin-top: 0vh;
   padding-top: 40px;
   padding-bottom: 20px;
   color: DarkGreen;
@@ -132,7 +132,7 @@ options(width=150)
 
 <!-- Pour cet exercice, nous utiliserons une base de données ([pines.csv](https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv)) portant sur la croissance de jeunes Pins blancs (*Pinus strobus*) en lien avec avec l'utilisation d'un fertilisant, la déprédation par le Cerf de Virginie, la compétition avec la strate arbustive et l'espacement entre les individus. Cette base de données comporte plusieurs colonnes: -->
 
-```{r, message=FALSE, echo=FALSE, include=FALSE, warning= FALSE}
+```{r, message=FALSE, echo=FALSE, include=FALSE, warning= FALSE, eval=FALSE}
 library(ggplot2)
 
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
@@ -220,7 +220,6 @@ Add a p value on the graph.
 
 Flag the outlier for which the height measured is a bit doubtful. 
 
-<!-- 
 
 #### Solution
 
@@ -233,6 +232,7 @@ deer <- ggplot(d,aes(deer,height)) +
   geom_jitter(width=0.1, alpha=0.25) +
   theme_light()
 
+set.seed(1234) # fix randomly jittered points
 deer + annotate("text", x = 1.5, y = 650, label = "p = 0.01", size = 4) +
        geom_segment(x = 1.5, y = 750, xend = 1.1, yend = 750, 
          arrow = arrow(length = unit(0.1, "inches")), colour = "grey") +
@@ -240,7 +240,6 @@ deer + annotate("text", x = 1.5, y = 650, label = "p = 0.01", size = 4) +
 
 ```
 
--->
 
 ## Assembling with patchwork
 
@@ -396,9 +395,10 @@ More interactive and easier to find a good layout, but less easily reproducible.
 
 ### Challenge
 
-```{r, message = FALSE, include = FALSE, echo = FALSE}
+```{r, message = FALSE, include = FALSE, echo = FALSE, eval=FALSE}
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv", header = TRUE)
 write.csv(d,"/home/frousseu/Documents/github/graphs_uds_2024/data/colibris.csv",row.names=FALSE)
+
 ```
 
 <br>
@@ -419,10 +419,7 @@ head(d)
 
 
 
-<!-- 
-
 #### Solution
-
 
 ```{r, message = FALSE, warning = FALSE, results = "hold"}
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv")
@@ -444,5 +441,4 @@ hummers
 
 ```
 
--->
 
