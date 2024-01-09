@@ -45,9 +45,11 @@ str(seq_count)
 
 There, you can see that our four variables are now factors and you can validate the number of levels for each. 
 
-## Barplot : Family 
+## Barplot
 
 We want to look at how microbial families are distributed across our samples using their sequence counts. We'll start very simple, by using the mean of all samples for each Family. For this, we need to do a short data manipulation, because right now our dataset has one observation per family _per sample_. 
+
+#### Barplot by microbial family
 
 ```{r}
 # Dataframe
@@ -63,6 +65,8 @@ ggplot(family.df,
 ```
 
 That's nice, but now we'd like to see if these counts differ much across compartments, i.e. the green vs. the brown part of the plants. Therefore, we need to calculate the mean for each family. We'll also compute the standard deviation of those means for later.
+
+#### Multiple groups (stacked)
 
 ```{r}
 # Dataframe
@@ -80,12 +84,16 @@ ggplot(familyComp.df, aes(x = mean_count, y = Family,
 
 That's not bad, but we might want to have each column side-by-side instead of stacked on top of each other. The "position" argument is going to help us here. While we're at it, let's use some proper colours:
 
+#### Multiple groups (dodged)
+
 ```{r}
 ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) + 
   geom_col(position = "dodge") # Dodge the columns, so we can read the counts
 ```
 
 That's better. However, it could be useful to show how precise these means are. We can add the standard deviation of each as an error bar. Look carefully, we need to modify the "position" argument a bit so everything aligns properly.
+
+#### Error bars
 
 ```{r}
 ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) + 
@@ -107,6 +115,8 @@ Since plots are meant to be pretty, let's do a couple more things:
 6. Use a different font size and police
 
 Since this will be our final plot for this exercise, we'll also save it into an object in order to be able to export it. 
+
+#### Prettier barplot
 
 ```{r}
 comp_colours <- c("lightsalmon4", "springgreen4")
@@ -132,7 +142,7 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
        width = 1600, height = 900, units = 'px', dpi = 150)
 ```
 
-## Exercise
+### Exercise
 
 Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the labs() functions). Do not add error bars
 
@@ -161,6 +171,8 @@ A different way of looking at the data could be to compare Host and Compartment 
 
 In this case, we'll start by plotting the counts for each compartment
 
+#### Stacked barplot
+
 ```{r}
 ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
   geom_col(aes(fill = Family))
@@ -168,6 +180,8 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
 ```
 
 How can we look at each host separately? Faceting will help us !
+
+#### Splitting by groups with Facets
 
 ```{r}
 ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
@@ -180,6 +194,8 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
 That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the total number of sequences is often very different between compartments, making it hard to tell if some families are relatively more or less represented. 
 
 One way to solve this is to normalize the counts to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data:
+
+#### "Filling" the stack (relative values)
 
 ```{r}
 ggplot(seq_count, aes(y = Compartment, x = seq_count)) + 
