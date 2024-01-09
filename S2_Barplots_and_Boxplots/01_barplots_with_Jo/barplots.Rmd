@@ -81,7 +81,8 @@ familyComp.df <- seq_count %>%
 
 # Plot
 ggplot(familyComp.df, 
-       aes(x = mean_count, y = Family, fill = Compartment)) + # fill by compartment 
+       aes(x = mean_count, y = Family, 
+           fill = Compartment)) + # fill by compartment 
   geom_col() 
 ```
 
@@ -148,7 +149,7 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
 
 Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type `?theme_` in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the `labs()` function). Do not add error bars.
 
-```{r, include = FALSE}
+```{r}
 seq_count %>% 
   group_by(Family, Host) %>% 
   summarise(mean_count = mean(seq_count),     
@@ -205,6 +206,9 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
            position = 'fill') + # normalises total values to 1
   facet_grid(rows = vars(Host)) +
   xlab("Proportion of sequence counts") # not absolute values
+
+ggplot(seq_count, aes(y = Compartment)) + 
+  geom_bar()
 ```
 
 End of workshop.
