@@ -40,7 +40,7 @@ comp_colours <- c("lightsalmon4", "springgreen4")
 ) # Notice I'm saving this plot as an object, because we will be building on it. Wrapping in () is equivalent to calling the pcoa_comp object afterwards.
 ```
 
-The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
+The patterns are less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
 
 #### Adding ellipses
 
@@ -73,8 +73,25 @@ All right, but the colours ain't right! That's because geom_points uses a `colou
 )
 ```
 
+What if, for some reason, we'd like the Green to show first and the Brown, second ? (Maybe because the brown part is the bottom of the plant...). Factors come in handy here. 
+
+```{r}
+comp_colours2 <- c("springgreen4", "lightsalmon4")
+
+# Prep dataset
+pcoa %>% 
+  mutate(Compartment = factor(Compartment, levels = c("Green", "Brown"))) %>% 
+  # Plot : 
+  ggplot(., aes(x = PCOA1, y = PCOA2)) +
+  geom_point(aes(colour = Compartment)) + 
+  scale_colour_manual(values = comp_colours2)  +
+  stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Compartment)) +
+  scale_fill_manual(values = comp_colours2) +
+  theme_light()
+```
+
 ### Exercise
-What if we _also_ wanted to see the host species on that plot? We can use another geom_point aesthetics, 'shape'. As an exercise, try to make a new plot where 
+What if we _also_ wanted to see the host species on that plot? We can use another `geom_point()` aesthetics, 'shape'. As an exercise, try to make a new plot where 
 
 1. The points are coloured by host 
 2. The points are shaped by Compartment

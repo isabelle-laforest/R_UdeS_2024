@@ -35,6 +35,7 @@ The columns whose values are not numbers are considered character columns. You c
 ```{r}
 str(seq_count)
 ```
+
 To work well with ggplot, we need them to be factors. You can see factors as a set of categories that represents each unique value in a variable. For example, we have two Compartment factors (Brown or Green). Here's a quick way to convert all character columns to factors, using a little trick from the very useful `dplyr` package.
 
 ```{r}
