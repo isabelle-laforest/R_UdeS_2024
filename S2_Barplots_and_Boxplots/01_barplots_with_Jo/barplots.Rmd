@@ -6,6 +6,11 @@ Author: Jonathan Rondeau-Leclaire
 
 ## Data preparation
 
+```{r setup, include = FALSE}
+library(tidyverse) # Load required library
+```
+
+
 The data : Microbial family abundance by sample.
 
 We have 131 samples taken on four different plant hosts (mosses) on either the brown or green compartment of the plant. For each microbial Family identified, the count represents the absolute number of sequences in a sample that were attributed to that Family. We want to compare these numbers across compartments and hosts.
@@ -13,8 +18,6 @@ We have 131 samples taken on four different plant hosts (mosses) on either the b
 First, let's have a look at the data: 
 
 ```{r}
-library(tidyverse) # Load required library
-
 # Import the data file
 seq_count <- read.delim("../../Data/sequence_counts.tsv") # by default, read.delim assumes the file has a header, and that it is separated by tabulations ("\t")
 
@@ -27,23 +30,21 @@ seq_count %>%
   dplyr::summarise(n_samples = n(), # count the number of samples for each
                    .by = c('Host', 'Compartment'))
 ```
-The columns whose values are not numbers are considered "character" columns. You can see this by looking at the structure of your object, where "chr" means character and "int" means integer.
+The columns whose values are not numbers are considered character columns. You can see this by looking at the structure of your object, where `chr` means character and `int` means integer.
 
 ```{r}
 str(seq_count)
 ```
-To work well with ggplot, we need them to be factors. You can see factors as a set of categories that represents each unique value in a variable. For example, we have two Compartment factors (Brown or Green). Here's a quick way to convert all character columns to factors, using a little trick from the very useful 'dplyr' package.
+To work well with ggplot, we need them to be factors. You can see factors as a set of categories that represents each unique value in a variable. For example, we have two Compartment factors (Brown or Green). Here's a quick way to convert all character columns to factors, using a little trick from the very useful `dplyr` package.
 
 ```{r}
 seq_count <- seq_count %>% 
-  # the mutate() function modifies the values of a variable
   mutate(across(where(is.character), as.factor))
 
-# Make sure the factors are as expected
-str(seq_count)
+str(seq_count) # Making sure the factors are as expected
 ```
 
-There, you can see that our four variables are now factors and you can validate the number of levels for each. 
+There, you can see that our four variables are now factors and you can validate the number of levels for each (good tip to find data errors!)
 
 ## Barplot
 
@@ -64,7 +65,7 @@ ggplot(family.df,
   geom_col() 
 ```
 
-That's nice, but now we'd like to see if these counts differ much across compartments, i.e. the green vs. the brown part of the plants. Therefore, we need to calculate the mean for each family. We'll also compute the standard deviation of those means for later.
+That's nice, but now we'd like to see if these counts differ much across compartments, i.e. the green vs. the brown part of the plants. Therefore, we need to calculate the mean for each family. We'll also compute the standard deviation of those means for later. The `fill` aesthetic will come in handy.
 
 #### Multiple groups (stacked)
 
@@ -77,12 +78,12 @@ familyComp.df <- seq_count %>%
             .groups = 'drop')                # drops the grouping structure
 
 # Plot
-ggplot(familyComp.df, aes(x = mean_count, y = Family, 
-                          fill = Compartment)) + # fill by compartment 
+ggplot(familyComp.df, 
+       aes(x = mean_count, y = Family, fill = Compartment)) + # fill by compartment 
   geom_col() 
 ```
 
-That's not bad, but we might want to have each column side-by-side instead of stacked on top of each other. The "position" argument is going to help us here. While we're at it, let's use some proper colours:
+That's not bad, but we might want to have each column side-by-side instead of stacked on top of each other. The `position` argument is going to help us here. While we're at it, let's use some proper colours:
 
 #### Multiple groups (dodged)
 
@@ -91,7 +92,7 @@ ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) +
   geom_col(position = "dodge") # Dodge the columns, so we can read the counts
 ```
 
-That's better. However, it could be useful to show how precise these means are. We can add the standard deviation of each as an error bar. Look carefully, we need to modify the "position" argument a bit so everything aligns properly.
+That's better. However, it could be useful to show how precise these means are. We can add the standard deviation of each as an error bar. Look carefully, we need to modify the `position` argument a bit so everything aligns properly:
 
 #### Error bars
 
@@ -108,11 +109,10 @@ ggplot(familyComp.df, aes(x = mean_count, y = Family, fill = Compartment)) +
 Since plots are meant to be pretty, let's do a couple more things: 
 
 1. Use some coherent colours (green and brown!)
-2. Remove the gray background (personal preference) by imposing a minimal theme
-3. Rename the x axis and add a plot title
-4. Remove the horizontal grid
-5. Space-out the column pairs vertically to better distinguish families 
-6. Use a different font size and police
+2. Remove the gray background by imposing a minimal theme
+3. Rename the x axis and add a plot title uning `labs()`
+4. Remove the horizontal grid using `theme()`
+5. Use a different font size and police 
 
 Since this will be our final plot for this exercise, we'll also save it into an object in order to be able to export it. 
 
@@ -136,7 +136,7 @@ myplot <- # save this plot as an object
 myplot
 ```
 
-Saving this plot can be easily achieved through ggsave, which provides a straightforward way 
+Saving this plot can be easily achieved through `ggsave()`, which is pretty straightforward.
 ```{r}
 ggsave(filename = "./barplot.jpg", plot = myplot, 
        width = 1600, height = 900, units = 'px', dpi = 150)
@@ -144,7 +144,7 @@ ggsave(filename = "./barplot.jpg", plot = myplot,
 
 ### Exercise
 
-Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type ?theme_ in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the labs() functions). Do not add error bars
+Try to create a barplot with mean seq_count _by Host_, without specifying colours. Try applying a different theme (hint: type `?theme_` in your console and a semi-automatic selection appears with many themes to play around with). Add a caption to your plot to specify that we are using 131 samples, and change the legend label to something more explicit than "host". (hint: look at the `labs()` function). Do not add error bars.
 
 ```{r, include = FALSE}
 seq_count %>% 
@@ -179,7 +179,7 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
       # Notice: we don't use the "dodge" option, so the counts stack.
 ```
 
-How can we look at each host separately? Faceting will help us !
+How can we look at each host separately? `facet_grid()` will help us !
 
 #### Splitting by groups with Facets
 
@@ -193,7 +193,7 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
 
 That's fine, but it reveals a weakness in the way we are presenting data. Indeed, the total number of sequences is often very different between compartments, making it hard to tell if some families are relatively more or less represented. 
 
-One way to solve this is to normalize the counts to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data:
+One way to solve this is to normalize the counts to 1, which is equivalent to showing the relative counts instead of the absolute counts. We can easily achieve this without modifying our original data, just by changing the `position` argument:
 
 #### "Filling" the stack (relative values)
 
@@ -205,4 +205,4 @@ ggplot(seq_count, aes(y = Compartment, x = seq_count)) +
   xlab("Proportion of sequence counts") # not absolute values
 ```
 
-Notice, the counts were normalized to 1.
+End of workshop.

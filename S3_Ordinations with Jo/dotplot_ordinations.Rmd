@@ -3,6 +3,9 @@ title: "barplots_ggplot"
 date: "2024-01-06"
 Author: Jonathan Rondeau-Leclaire
 ---
+```{r setup, include = FALSE}
+library(tidyverse) # Load required library
+```
 
 ## What is an ordination? 
 
@@ -18,8 +21,6 @@ We start with a simple data frame of our 131 samples and their coordinates (x an
 #### Dot plot coloured by Host
 
 ```{r}
-library(tidyverse) # Load required library
-
 pcoa <- read.delim("../Data/pcoa.tsv")
 
 ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
@@ -36,8 +37,7 @@ comp_colours <- c("lightsalmon4", "springgreen4")
 (pcoa_comp <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
   geom_point(aes(colour = Compartment)) + # ***
   scale_colour_manual(values = comp_colours) # ***
-) # Notice I'm saving this plot as an object, because we will be building on it.
-# Wrapping in () is equivalent to calling the pcoa_comp object afterwards.
+) # Notice I'm saving this plot as an object, because we will be building on it. Wrapping in () is equivalent to calling the pcoa_comp object afterwards.
 ```
 
 The patterns are much less obvious here. One way we can look at it is by tracing an ellipse that represents the centroid (mean of x and y) and dispersion (variance) of each group of points. This helps us see if there is a certain tendency of our points to cluster together.
@@ -50,7 +50,7 @@ The patterns are much less obvious here. One way we can look at it is by tracing
 )
 ```
 
-We usually rather fill those ellipses with a colour by specifying a particular "geom" argument and a transparency level: 
+We usually rather fill those ellipses with a colour by specifying a particular `geom` argument and a transparency (`alpha`) level: 
 
 #### Filled, transparent ellipses
 
@@ -62,15 +62,14 @@ We usually rather fill those ellipses with a colour by specifying a particular "
 )
 ```
 
-All right, but the colours ain't right! That's because geom_points uses a 'colour' aesthetic to add colour to the points, whereas stat_ellipse uses a 'fill' aesthetic, just like the barplots and boxplots. Let's fix that: 
+All right, but the colours ain't right! That's because geom_points uses a `colour =` aesthetic to add colour to the points, whereas stat_ellipse uses a `fill =` aesthetic, just like the barplots and boxplots. Let's fix that: 
 
 #### Matching fill and colour
 
 ```{r}
 (pcoa_comp +
   stat_ellipse(geom = "polygon", alpha = 0.2, aes(fill = Compartment)) +
-  scale_fill_manual(values = comp_colours) + # ***
-  theme_minimal()
+  scale_fill_manual(values = comp_colours) # <<< there
 )
 ```
 
@@ -93,7 +92,7 @@ ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
 
 #### Colours for continuous variables
 
-What if we're interested in how a continuous variable relates to the dissimilarity between our samples ? Providing such a variable to the "colour" aesthetic excludes the use of ellipses, but can inform as well as to whether there seems to be a relationship with variables of interest.
+What if we're interested in how a continuous variable relates to the dissimilarity between our samples ? Providing such a variable to the `colour` aesthetic excludes the use of ellipses, but can inform as well as to whether there seems to be a relationship with variables of interest.
 
 ```{r}
 (pcoa_pH <- ggplot(pcoa, aes(x = PCOA1, y = PCOA2)) +
@@ -103,9 +102,9 @@ What if we're interested in how a continuous variable relates to the dissimilari
 )
 ```
 
-Typically, in a PCoA we indicate a % value on each axis label. That value is the proportion of the total data variance (inertia, to be more accurate) that each Principal Coordinate explains. Without diving further into the meaning of these values, suppose you would like to add such a value to your axis label. 
+Typically, in a PCoA we indicate a % value on each axis label. That value is the proportion of the total data variance (inertia, to be more accurate) that each Principal Coordinate explains. Without diving further into the meaning of these values, suppose you would like to add such a value to your axis label. You could simply write them in manually using the `labs()` argument.
 
-However, it is good practice to add those numbers dynamically. The reason for this is, imagine you've made all these pretty plots, but a few weeks (or months) later, for whatever reason you ended up removing two samples (maybe you decided they weren't good enough after all). You rerun your computations (including calculating your principal coordinates), so it's very probable these values will change. Sure, you can change them manually. But you might also forget. With dynamically generated values, you won't even have to think about it.
+It is good practice to add those numbers dynamically. The reason for this is, imagine you've made all these pretty plots, but a few weeks (or months) later, for whatever reason you ended up removing two samples (maybe you decided they weren't good enough after all). You rerun your computations (including calculating your principal coordinates), so it's very probable these values will change. Sure, you can change them manually. But you might also forget. With dynamically generated values, you won't even have to think about it.
 
 #### Dynamically defined labels
 
@@ -119,7 +118,8 @@ pcoa_pH +
   labs(x = paste0('PCOA1 (', PCOA1, ' %)'),
        y = paste0('PCOA2 (', PCOA2, ' %)'))
 ```
-The result is the same, but should the PCOA change, the plot will automatically be updated.
+
+Should the PCOA change, the plot will automatically be updated.
 
 
 
