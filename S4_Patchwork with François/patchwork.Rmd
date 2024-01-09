@@ -137,21 +137,15 @@ library(ggplot2)
 
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
 d<-na.omit(d)
-head(d,3)
+d$height[30]<-750
+write.csv(d,"/home/frousseu/Documents/github/graphs_uds_2024/data/pines.csv",row.names=FALSE)
 ```
-
-
 
 
 ```{r, out.width="100%", fig.height=4,fig.width=7, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
 library(ggplot2)
 
-#d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
-
-d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/pines.csv", header = TRUE)
-d<-na.omit(d)
-d$height[30]<-750
-
+d <- read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/pines.csv", header = TRUE)
 head(d,3)
 ```
 
@@ -226,6 +220,8 @@ Add a p value on the graph.
 
 Flag the outlier for which the height measured is a bit doubtful. 
 
+<!-- 
+
 #### Solution
 
 ```{r, out.width="40%", fig.height=3,fig.width=4, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
@@ -244,6 +240,7 @@ deer + annotate("text", x = 1.5, y = 650, label = "p = 0.01", size = 4) +
 
 ```
 
+-->
 
 ## Assembling with patchwork
 
@@ -259,7 +256,7 @@ cover <- ggplot(d,aes(cover,height))+
 
 ## Package patchwork
 
-Assemble ggplots easily with the package. [patchwork](https://patchwork.data-imaginist.com/index.html)
+Assemble ggplots easily with the package [patchwork](https://patchwork.data-imaginist.com/index.html).
 ```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
 library(patchwork)
 
@@ -294,12 +291,7 @@ spacing <- ggplot(d,aes(spacing, height))+
 ### Adding a blank space
 ```{r, out.width="100%", fig.height=6,fig.width=9, fig.align="center", message=FALSE, echo=TRUE, warning= FALSE}
 
-spacing <- ggplot(d,aes(spacing, height))+
-  geom_jitter(width=0.1,alpha=0.25)+
-  theme_light()
-
 (fert|spacing|deer)/(cover|plot_spacer()|g)
-
 
 ```
 
@@ -363,16 +355,23 @@ graph
 ### Method 1
 <br><br>
 
+More easily reproducible and easier when programming.
+
+<br>
+
 ```{r}
 ggsave("/home/frousseu/Downloads/graph.png", graph, width = 20, height = 12, units = "cm", dpi = 300)
 
 ggsave("/home/frousseu/Downloads/graph.pdf", graph, width = 20, height = 12, units = "in", dpi = 300)
 ```
-<br><br>
-More easily reproducible
+
 
 ### Method 2
 <br><br>
+
+The classic base R way.
+
+<br>
 
 ```{r, message = FALSE, results = "hide"}
 png("/home/frousseu/Downloads/graph.png",width=10,height=6,units="in",res=300) #open device
@@ -385,19 +384,26 @@ dev.off()
 ```
 
 
+
+
 ### Method 3
 
 More interactive and easier to find a good layout, but less easily reproducible.
 <br><br>
-![](export_graph_rstudio.png)
+![](https://github.com/isabelle-laforest/R_UdeS_2024/blob/main/Data/export_graph_rstudio.png?raw=true)
 
 
 
 ## Challenge
 
+```{r, message = FALSE, include = FALSE, echo = FALSE}
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv", header = TRUE)
+write.csv(d,"/home/frousseu/Documents/github/graphs_uds_2024/data/colibris.csv",row.names=FALSE)
+```
+
 <br>
 
-1. Create a single image with the effect of sexe and age on the number of parasites on top and the effect of mass on the bottom.
+1. Create a single image with the effect of sex and age on the number of parasites on top and the effect of mass on the bottom.
 
 2. Annotate graphs with letters.
 
@@ -407,14 +413,16 @@ More interactive and easier to find a good layout, but less easily reproducible.
 
 <br><br>
 ```{r, message = FALSE}
-d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv")
+d <- read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/colibris.csv")
 head(d)
 ```
 
 
 
+<!-- 
 
 ### Solution
+
 
 ```{r, message = FALSE, warning = FALSE, results = "hold"}
 d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/colibris.csv")
@@ -436,4 +444,5 @@ hummers
 
 ```
 
+-->
 
