@@ -1,0 +1,427 @@
+---
+title: "" #ECL750<br>François Rousseu<br>Hiver 2021
+author: ""
+date: ""
+output:
+  html_document:
+    depth: 5
+    fig_height: 5
+    fig_width: 6
+    number_sections: no
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<script>
+    $(document).ready(function() {
+      $items = $('div#TOC li');
+      $items.each(function(idx) {
+        num_ul = $(this).parentsUntil('#TOC').length;
+        $(this).css({'text-indent': num_ul * 20, 'padding-left': 0});
+      });
+
+    });
+</script>
+```
+
+
+```{=html}
+<style>
+
+pre.r {
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+    font-size: 12pt;
+}
+
+pre code {
+  font-size: 12pt;
+}
+
+body {
+  font-size: 14pt;
+  margin-right: 5vw;
+  margin-left: 0vw;
+  /* max-width: 80vw; */
+}
+
+.main-container {
+    max-width: 100vw !important;
+} 
+
+#TOC {
+  font-size: 0.85vw;
+  border-color: white;
+  max-width: 15vw;
+  margin-top: 5vh;
+}
+
+.list-group-item.active:focus{
+    z-index: 2;
+    color: darkgreen;
+    background-color: #EEEEEE;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+.list-group-item.active:hover {
+    z-index: 2;
+    color: darkgreen;
+    background-color: #FFFFFF;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+.list-group-item.active{
+    z-index: 2;
+    color: darkgreen;
+    background-color: #FFFFFF;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+}
+
+h1.title {
+  margin-top: 50px;
+  font-size: 42px;
+  color: DarkGreen;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 5vh;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  color: DarkGreen;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5 {
+  font-size: 42px;
+}
+
+
+.pres { /* write {.pres} next to each section to apply css  */
+   padding-top: 100px;
+   margin-bottom: 700px;
+}
+
+/* html{
+  scroll-behavior: smooth;
+} */
+
+
+</style>
+```
+
+
+```{r setup, include=FALSE}
+library(scales)
+knitr::opts_chunk$set(echo=TRUE, tidy=TRUE, error=TRUE, fig.align="center", fig.width=8, fig.height=6, cache=FALSE, message=FALSE)
+options(width=150)
+```
+
+# Visualizing models with ggeffects
+
+The package [ggeffects](https://strengejacke.github.io/ggeffects/index.html) is for visualizing results of analyses and model-based predictions. It is based on [ggplot2](https://ggplot2.tidyverse.org/index.html)
+
+<!-- <iframe src="https://strengejacke.github.io/ggeffects/index.html" height="400" width="1000" title="Iframe Example"></iframe> -->
+
+```{r, message = FALSE, include = FALSE, echo = FALSE}
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/germination.csv", header = TRUE)
+write.csv(d,"/home/frousseu/Documents/github/graphs_uds_2024/data/germination.csv",row.names=FALSE)
+```
+
+## Plot raw data
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+library(ggplot2)
+
+head(iris)
+
+ggplot(iris,aes(Species,Petal.Length))+
+  geom_jitter(width = 0.1, alpha = 0.2) + 
+  theme_light()
+
+```
+
+## An ANOVA / linear model
+
+Raw data is good, but a model is (usually) better!
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+
+m <- lm(Petal.Length~Species,data=iris)
+anova(m)
+
+```
+
+## Enters ggeffects!
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+
+library(ggeffects)
+
+p <- ggpredict(m,terms=c("Species"))
+
+plot(p)
+
+```
+
+## Add data
+
+Model predictions are good, but it is even better when they are plotted along with the data!
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+
+plot(p, add.data = TRUE, jitter = TRUE, dot_alpha = 0.15, color="darkgreen") 
+
+```
+
+## Add more informative labels
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+
+plot(p, add.data = TRUE, jitter = TRUE, dot_alpha = 0.35, color="darkgreen") +
+  labs(
+    x = "Iris species",
+    y = "Petal lengths (cm)",
+    title = "Petal lengths of iris species"
+  )
+```
+
+
+## What does ggpredict produces ?
+
+```{r, out.width="60%", fig.height=4,fig.width=6, fig.align="center", message=FALSE, echo=TRUE}
+
+ggpredict(m,terms=c("Species"))
+
+data.frame(ggpredict(m,terms=c("Species")))
+
+```
+
+
+## A data frame with the values to (gg)plot
+
+```{r, out.width="50%", fig.height=3,fig.width=4, fig.align="center", message=FALSE, echo=TRUE}
+
+x <- data.frame(ggpredict(m,terms=c("Species")))
+x
+
+ggplot(x, aes(x, predicted)) +
+  geom_pointrange(aes(ymin = conf.low, ymax = conf.high),size = 0.2) +
+  geom_jitter(data = iris, aes(Species, Petal.Length), alpha = 0.1) +
+  theme_bw()
+
+```
+
+
+## Hummingbirds
+
+```{r, fig.height = 4, fig.width = 11, fig.align="center" }
+d <- read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/colibris.csv")
+d <- na.omit(d)
+
+cols <- c("sexe","age")
+d[cols] <- lapply(d[cols],factor)
+
+# A glm and poisson family for count data (number of parasites)
+m <- glm (parasites ~ sexe + age + masse, data = d, family = poisson) 
+```
+
+
+## Plot predictions
+```{r, fig.height = 4, fig.width = 11, fig.align="center" }
+
+library(magrittr) # for the %>% 
+library(patchwork)
+
+g1 <- ggpredict(m, terms=c("masse")) %>% 
+  plot(add.data = TRUE, jitter = 0.3, dot_alpha = 0.1)
+
+g2 <- ggpredict(m, terms=c("sexe")) %>% 
+  plot(add.data = TRUE, jitter = 0.3, dot_alpha = 0.1)
+
+g3 <- ggpredict(m, terms=c("age")) %>% 
+  plot(add.data = TRUE, jitter = 0.3, dot_alpha = 0.1)
+
+g1 + g2 + g3
+
+```
+
+
+## Predictions combined
+```{r, fig.height = 4, fig.width = 7, fig.align="center"}
+
+g <- ggpredict(m, terms=c("masse", "sexe", "age"))
+plot(g, add.data = TRUE, jitter = 0.3, dot_alpha = 0.5)
+
+```
+
+<!--
+
+## Tree plantation - Anova
+```{r, out.width="80%", fig.height=4, fig.width=8, fig.align="center", message=FALSE,}
+d <- read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/pines.csv", header = TRUE)
+head(d,3)
+
+cols <- c("deer", "fert", "cover", "spacing")
+d[cols] <- lapply(d[cols], factor)
+
+m <- lm (height~fert*cover+height_ini,data=d)
+anova(m)
+```
+
+
+## Tree plantation - Graph
+```{r, out.width="80%", fig.height=4, fig.width=8, fig.align="center", message=FALSE,}
+
+g1 <- ggpredict(m, terms=c("height_ini")) %>% 
+  plot(add.data=TRUE, jitter = 0.1, dot_alpha = 0.1)
+
+g2 <- ggpredict(m, terms=c("fert", "cover")) %>% 
+  plot(add.data=TRUE, jitter = 0.1, dot_alpha = 0.1)
+
+layout <- "
+AAABB
+"  
+g1 + g2 + plot_layout(design = layout)
+
+```
+
+-->
+
+## More complex examples
+
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+
+d<-read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/germination.csv")
+head(d)
+
+# A glm with a binomial family for binomial data (logistic regression, germination or not 0/1)
+m<-glm(germ~esp*substrat*frequence,data=d,family=binomial)
+```
+
+
+## Plot the % of germination
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+# predictions from model
+g<-ggpredict(m,terms=c("esp","substrat","frequence"))
+
+plot(g)
+
+```
+
+
+
+## Add observations ?
+
+<!--
+
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+
+plot(g, add.data=TRUE, jitter=0.05, dot_alpha=0.2)
+
+
+```
+
+-->
+
+## Challenge
+
+Plot a graph from a model that looks at the effect of height (_hauteur_), exposition (_exposition_) and beach type (_Type_) on the number of corals species (_richesse_).
+
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+
+d <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/plages.csv")
+h <- read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/plage_type.csv")
+d <- merge(d, h, by.x = "plage", by.y = "Plage")
+head(d)
+
+m <- glm(richesse ~ hauteur + exposition + Type, data = d, family = poisson)
+
+```
+
+
+<!--
+
+### Solution
+
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+
+
+
+
+# predictions from model
+g<-ggpredict(m,terms=c("hauteur","exposition","Type"))
+
+plot(g, dot_size=1, add.data = TRUE)
+
+```
+
+-->
+
+<!-- ## Owls
+```{r, out.width="80%", fig.height=4,fig.width=8, fig.align="center", message=FALSE, echo=TRUE}
+library(ggeffects)
+library(ggplot2)
+
+d<-read.csv("https://raw.githubusercontent.com/frousseu/ECL749/master/data/chouette.csv")
+head(d)
+
+d["year"]<-lapply(d["year"],factor)
+
+m<-glm(CRpres~for_feuil*year,data=d,family=binomial)
+
+# predictions from model
+g1<-ggpredict(m,terms=c("for_feuil")) |> plot()
+    
+g2<-ggpredict(m,terms=c("year")) |> plot()
+
+g2<-ggpredict(m,terms=c("for_feuil","year")) |> plot()
+
+g1 + g2
+
+```
+
+-->
+
+<!--
+
+## Exercice
+
+```{r}
+d <- read.csv("https://raw.githubusercontent.com/isabelle-laforest/R_UdeS_2024/main/Data/pines.csv", header = TRUE)
+head(d,3)
+
+cols <- c("deer", "fert", "cover", "spacing")
+d[cols] <- lapply(d[cols], factor)
+
+m <- lm (height~fert*cover,data=d)
+anova(m)
+
+g <- ggpredict(m, terms=c("fert", "cover"))
+plot(g, add.data=TRUE, jitter = 0.1, dot_alpha = 0.15)
+
+#hypothesis_test(m, c("fert", "spacing"))
+
+#ggplot(g, aes(x, predicted)) +
+#  geom_pointrange(aes(ymin = conf.low, ymax = conf.high), position = position_dodge(width=0.05)) +
+#  geom_point(data=d,aes(fert,height), position = position_dodge(width=0.05))
+  
+
+```
+
+-->
+
+
+
+
+
+
